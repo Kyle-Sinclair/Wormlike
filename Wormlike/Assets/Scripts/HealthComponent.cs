@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-public class HealthBar : MonoBehaviour
+public class HealthComponent : MonoBehaviour
 {
     
     [SerializeField,Range(25,100)]private int _currentHealth;

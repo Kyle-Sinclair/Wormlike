@@ -51,7 +51,7 @@ namespace ManagerScripts
             for (int i = 0; i < _numOfPlayers; i++)
             {
                 GameObject newCharacter = Instantiate(_controllableCharacter);
-                newCharacter.GetComponent<ControllableCharacter>().DeactivateAsControllable();
+                newCharacter.GetComponent<ThirdPersonMovementController>().DeactivateAsControllable();
                 newCharacter.transform.position = new Vector3(Random.Range(0f,5f),0,Random.Range(0f,5f));
                 _turnManager.RegisterPlayer(newCharacter, teamNumber);
                 teamNumber++;

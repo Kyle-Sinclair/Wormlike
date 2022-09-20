@@ -9,18 +9,18 @@ namespace ManagerScripts
     public class TurnManager : MonoBehaviour
     {
         private List<GameObject> _players;
-        private ControllableCharacter _currentlyControlled;
+        private ThirdPersonMovementController _currentlyControlled;
         public List<List<GameObject>> Teams;
         private int teamIndex;
         private int _playerIndex;
-        [SerializeField] private CinemachineVirtualCamera _vcam;
+        [SerializeField] private CinemachineFreeLook _vcam;
 
         private void Awake()
         {
             Teams = new List<List<GameObject>>();
             _players = new List<GameObject>();
             _playerIndex = 0;
-            _vcam = FindObjectOfType<CinemachineVirtualCamera>();
+            _vcam = FindObjectOfType<CinemachineFreeLook>();
         }
 
         // Start is called before the first frame update
@@ -57,7 +57,7 @@ namespace ManagerScripts
         public void BeginTurns()
         {
 
-            _currentlyControlled = Teams[0][0].GetComponent<ControllableCharacter>();
+            _currentlyControlled = Teams[0][0].GetComponent<ThirdPersonMovementController>();
             _currentlyControlled.ActivateAsControllable();
             ChangeCameraTarget(_currentlyControlled);
 
@@ -77,13 +77,13 @@ namespace ManagerScripts
                 _playerIndex %= _players.Count;
             }
 
-            _currentlyControlled = _players[_playerIndex].GetComponent<ControllableCharacter>();
+            _currentlyControlled = _players[_playerIndex].GetComponent<ThirdPersonMovementController>();
             _currentlyControlled.ActivateAsControllable();
             ChangeCameraTarget(_currentlyControlled);
             // _currentlyControlled.PrioritizeVirtualCamera();
         }
 
-        private void ChangeCameraTarget(ControllableCharacter character)
+        private void ChangeCameraTarget(ThirdPersonMovementController character)
         {
             Transform cameraTarget = character.transform.Find("Camera Target").transform;
             _vcam.Follow = cameraTarget;

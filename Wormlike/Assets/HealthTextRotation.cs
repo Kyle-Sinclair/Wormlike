@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthText : MonoBehaviour
+public class HealthTextRotation : MonoBehaviour
 {
     private Camera m_Camera;
 
