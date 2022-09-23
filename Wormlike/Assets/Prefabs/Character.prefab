@@ -330,6 +330,7 @@ GameObject:
   - component: {fileID: 7023126906037528661}
   - component: {fileID: 6613415021606043513}
   - component: {fileID: 1370576854512375956}
+  - component: {fileID: -2337394792091986734}
   m_Layer: 3
   m_Name: Character
   m_TagString: Untagged
@@ -352,6 +353,7 @@ Transform:
   - {fileID: 5681583214021182837}
   - {fileID: 8071716920111671255}
   - {fileID: 750058656550536367}
+  - {fileID: 5817271766478011467}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -431,7 +433,19 @@ MonoBehaviour:
     m_ActionId: 5f00c9d1-c865-4c5c-bee7-5c3a204c044c
     m_ActionName: Player/Look[/Mouse/delta]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -2337394792091986734}
+        m_TargetAssemblyTypeName: WeaponryController, Assembly-CSharp
+        m_MethodName: PrimaryFire
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: d8d66a28-6549-4ba0-903b-50327236deb8
     m_ActionName: Player/Fire[/Mouse/leftButton]
   - m_PersistentCalls:
@@ -476,18 +490,6 @@ MonoBehaviour:
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5315608239645495800}
-        m_TargetAssemblyTypeName: ThirdPersonMovementController, Assembly-CSharp
-        m_MethodName: ReadJump
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 6613415021606043513}
         m_TargetAssemblyTypeName: JumpAndGravityBehaviour, Assembly-CSharp
         m_MethodName: ReadJump
@@ -502,6 +504,26 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: b345ee5e-34e4-4457-a464-f690e9eec776
     m_ActionName: Player/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d71f9469-894d-4729-8769-bed205c81e59
+    m_ActionName: Player/Ability[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -2337394792091986734}
+        m_TargetAssemblyTypeName: WeaponryController, Assembly-CSharp
+        m_MethodName: OnChangeAngle
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3e056e47-62f0-4ac7-b326-06da40a99f27
+    m_ActionName: Player/ChangeShotAngle[/Keyboard/z,/Keyboard/x]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -518,7 +540,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
@@ -558,6 +580,50 @@ MonoBehaviour:
   _speed: 5
   _mainCamTransform: {fileID: 0}
   _turnSmoothFactor: 0.2
+--- !u!114 &-2337394792091986734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3566847314070877931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 401d3114ca6523343879330e91af4f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponHoverPoint: {fileID: 5817271766478011467}
+--- !u!1 &7835595473151549460
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5817271766478011467}
+  m_Layer: 0
+  m_Name: WeaponAttachmentPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5817271766478011467
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7835595473151549460}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.531, y: 0.948, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5246341407811442135}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8872620320085555579
 GameObject:
   m_ObjectHideFlags: 0

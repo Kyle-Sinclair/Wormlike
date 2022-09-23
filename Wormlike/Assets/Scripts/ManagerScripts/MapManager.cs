@@ -8,17 +8,16 @@ namespace ManagerScripts
 
     public class MapManager : MonoBehaviour
     {
-        [SerializeField] private int _numOfPlayers = 8;
-        [SerializeField]private int _numOfTeams = 2;
+        [SerializeField] private int _numOfPlayers = 1;
+        [SerializeField]private int _numOfTeams = 1;
 
-        [SerializeField] private Transform _terrain;
+        //[SerializeField] private Transform _terrain;
         [SerializeField] private float _mapScale;
         private TurnManager _turnManager;
         [SerializeField] private GameObject _controllableCharacter;
         void Awake()
         {
              Vector3 scaleChange = new Vector3(_mapScale * 3, 1, _mapScale);
-             _terrain.localScale = scaleChange;
              _turnManager = FindObjectOfType<TurnManager>();
         }
 
@@ -51,18 +50,13 @@ namespace ManagerScripts
             for (int i = 0; i < _numOfPlayers; i++)
             {
                 GameObject newCharacter = Instantiate(_controllableCharacter);
-                newCharacter.GetComponent<ThirdPersonMovementController>().DeactivateAsControllable();
                 newCharacter.transform.position = new Vector3(Random.Range(0f,5f),0,Random.Range(0f,5f));
-                _turnManager.RegisterPlayer(newCharacter, teamNumber);
+
+                ThirdPersonMovementController charController  = newCharacter.GetComponent<ThirdPersonMovementController>();
+                _turnManager.RegisterPlayer(charController, teamNumber);
                 teamNumber++;
                 teamNumber %= _numOfTeams;
             }
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            
         }
     }
 }
