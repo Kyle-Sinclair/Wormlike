@@ -13,6 +13,7 @@ namespace Projectiles.ProjectileBehaviours
 #if UNITY_EDITOR
 				behavior.IsReclaimed = false;
 #endif
+				behavior.Initialize();
 				return behavior;
 			}
 #if UNITY_EDITOR

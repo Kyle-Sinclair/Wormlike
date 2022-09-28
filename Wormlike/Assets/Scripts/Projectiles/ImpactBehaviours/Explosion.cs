@@ -25,9 +25,8 @@ public class Explosion : ImpactEffect
     MeshRenderer meshRenderer;
 
     void Awake () {
-        Debug.Log("Initalizing explosion");
+        //Debug.Log("Initalizing explosion");
         meshRenderer = GetComponent<MeshRenderer>();
-     
         Debug.Assert(meshRenderer != null, "Explosion without renderer!");
     }
     public override void Initialize (Vector3 position, float blastRadius, float damage)

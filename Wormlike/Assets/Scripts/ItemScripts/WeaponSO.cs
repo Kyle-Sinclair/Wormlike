@@ -18,6 +18,8 @@ namespace ItemScripts
 
         [SerializeField] public ProjectileBehaviourType ProjectileBehaviour;
         [SerializeField] public ImpactBehaviourType ImpactBehaviourType;
+        [SerializeField] public float speed;
+
         [SerializeField] public float Damage;
         [SerializeField] public float Force;
         [SerializeField] public float Range;

@@ -20,6 +20,12 @@ namespace Projectiles.ProjectileBehaviours
 				return ProjectileBehaviourType.LinearMovement;
 			}
 		}
+
+		public override void Initialize()
+		{
+			throw new System.NotImplementedException();
+		}
+
 		public override void Recycle() {
 			ProjectileBehaviorPool<LinearMovementProjectileBehaviour>.Reclaim(this);
 		}

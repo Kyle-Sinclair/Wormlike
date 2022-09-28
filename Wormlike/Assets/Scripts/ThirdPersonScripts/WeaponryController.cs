@@ -17,7 +17,6 @@ namespace ThirdPersonScripts
         private ProjectileBehaviourType _projectileBehaviourType;
         private ImpactBehaviourType _impactBehaviourType;
         private ObjectSpawner spawner = default;
-        public ImpactEffectFactory _impactEffectFactory = default;
         private bool _isChargable;
         private bool _charging;
         private float _charge;

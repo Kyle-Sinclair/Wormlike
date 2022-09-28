@@ -16,6 +16,7 @@ namespace Projectiles.ProjectileBehaviours
             }
         }
 #endif
+        public abstract void Initialize();
         public abstract void Recycle();
         public abstract void GameUpdate(Projectile projectile);
 
