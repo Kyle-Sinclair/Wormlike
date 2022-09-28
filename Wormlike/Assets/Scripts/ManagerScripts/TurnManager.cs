@@ -2,13 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using ItemScripts;
+using ThirdPersonScripts;
 using UnityEngine;
 
 namespace ManagerScripts
 {
     public class TurnManager : MonoBehaviour
     {
-        private ThirdPersonMovementController _currentlyControlled;
+        private WormController _currentlyControlled;
         [SerializeField] public List<Team> Teams;
 
         private int _currentTeamIndex;
@@ -27,7 +29,7 @@ namespace ManagerScripts
                 nextTurn();
             }
         }
-        public void RegisterPlayer(ThirdPersonMovementController newTeamMember, int teamNumber)
+        public void RegisterPlayer(WormController newTeamMember, int teamNumber)
         {
 
             Debug.Log("Registering player to " + teamNumber);
@@ -65,7 +67,7 @@ namespace ManagerScripts
         {
             _currentlyControlled.EquipWeapon(weaponData);
         }
-        private void ChangeCameraTarget(ThirdPersonMovementController character)
+        private void ChangeCameraTarget(WormController character)
         {
             Transform cameraTarget = character.transform.Find("Camera Target").transform;
             _vcam.Follow = cameraTarget;

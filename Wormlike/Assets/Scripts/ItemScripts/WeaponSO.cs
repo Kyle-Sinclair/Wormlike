@@ -1,17 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
+using Projectiles;
+using Projectiles.ImpactBehaviours;
+using Projectiles.ProjectileBehaviours;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Weapon",  menuName = "ScriptableObjects/WeaponSO")]
-public class WeaponSO : ScriptableObject
+namespace ItemScripts
 {
-    [SerializeField]
-    public bool Chargable;
+    [CreateAssetMenu(fileName = "Weapon",  menuName = "ScriptableObjects/WeaponSO")]
+    public class WeaponSO : ScriptableObject
+    {
+        [SerializeField]
+        public bool Chargable;
 
-    public string weaponName;
-    [SerializeField] public GameObject weaponModel;
+        public string weaponName;
+        [SerializeField] public GameObject weaponModel;
 
-    [SerializeField] public GameObject bulletPrefab;
-    
-    
+        [SerializeField] public Projectile bulletPrefab;
+
+        [SerializeField] public ProjectileBehaviourType ProjectileBehaviour;
+        [SerializeField] public ImpactBehaviourType ImpactBehaviourType;
+        [SerializeField] public float Damage;
+        [SerializeField] public float Force;
+        [SerializeField] public float Range;
+
+    }
 }

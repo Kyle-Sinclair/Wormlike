@@ -1,18 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthTextRotation : MonoBehaviour
+namespace UIScripts
 {
-    private Camera m_Camera;
+    public class HealthTextRotation : MonoBehaviour
+    {
+        private Camera m_Camera;
 
-    void Start()
-    {
-        m_Camera = Camera.main;
-    }
-    void Update()
-    {
-        transform.rotation = m_Camera.transform.rotation;
+        void Start()
+        {
+            m_Camera = Camera.main;
+        }
+        void Update()
+        {
+            transform.rotation = m_Camera.transform.rotation;
         
+        }
     }
 }

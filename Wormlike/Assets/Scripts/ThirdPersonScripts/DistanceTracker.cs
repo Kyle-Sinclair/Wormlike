@@ -1,13 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class DistanceTracker : MonoBehaviour
+namespace ThirdPersonScripts
 {
-  
-    // Update is called once per frame
-    void Update()
+    public class DistanceTracker : MonoBehaviour
     {
+  
+        // Update is called once per frame
+        void Update()
+        {
         
+        }
     }
 }

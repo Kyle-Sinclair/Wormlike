@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ThirdPersonScripts;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -52,7 +53,7 @@ namespace ManagerScripts
                 GameObject newCharacter = Instantiate(_controllableCharacter);
                 newCharacter.transform.position = new Vector3(Random.Range(0f,5f),0,Random.Range(0f,5f));
 
-                ThirdPersonMovementController charController  = newCharacter.GetComponent<ThirdPersonMovementController>();
+                WormController charController  = newCharacter.GetComponent<WormController>();
                 _turnManager.RegisterPlayer(charController, teamNumber);
                 teamNumber++;
                 teamNumber %= _numOfTeams;

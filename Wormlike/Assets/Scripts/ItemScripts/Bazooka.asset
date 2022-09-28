@@ -15,4 +15,6 @@ MonoBehaviour:
   Chargable: 1
   weaponName: Bazooka
   weaponModel: {fileID: 1414511900395635625, guid: 3a2b6936158109840a6401661ea86865, type: 3}
-  bulletPrefab: {fileID: 6310334658952044336, guid: 8af0c73607881b24bacdde32677731ea, type: 3}
+  bulletPrefab: {fileID: -4772310304183786359, guid: 8af0c73607881b24bacdde32677731ea, type: 3}
+  ProjectileBehaviour: 0
+  OnImpactBehaviour: 0

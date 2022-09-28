@@ -4030,6 +4030,51 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &894404346
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 894404348}
+  - component: {fileID: 894404347}
+  m_Layer: 0
+  m_Name: ObjectSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &894404347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894404346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 764f11c4e95bcf54b929d859fbfe8d24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _projectileFactory: {fileID: 11400000, guid: 813d330814ef32c49a893251ef07d23e, type: 2}
+--- !u!4 &894404348
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894404346}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.389546, y: 0.303998, z: 24.15667}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 20
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &950824036
 GameObject:
   m_ObjectHideFlags: 3
@@ -4237,8 +4282,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9ff312429e2ad45a6281820d6c6b2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _numOfPlayers: 1
-  _numOfTeams: 1
+  _numOfPlayers: 4
+  _numOfTeams: 4
   _mapScale: 5
   _controllableCharacter: {fileID: 3566847314070877931, guid: 29030009abbbeea4cac415b18adc34f9, type: 3}
 --- !u!1 &981933560
@@ -8310,7 +8355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c4ab729ebc46947b242d4b2eae344f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponData: {fileID: 11400000, guid: 802c094901a6f1e489da7d5e57abaf2f, type: 2}
+  _weaponData: {fileID: 11400000, guid: af9ca9989ac02614cbf84fd4891bf978, type: 2}
   m_TextComponent: {fileID: 2116275928}
 --- !u!114 &2057312694
 MonoBehaviour:
@@ -8361,8 +8406,8 @@ MonoBehaviour:
         m_MethodName: EquipWeaponOnActiveWorm
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: 802c094901a6f1e489da7d5e57abaf2f, type: 2}
-          m_ObjectArgumentAssemblyTypeName: WeaponSO, Assembly-CSharp
+          m_ObjectArgument: {fileID: 11400000, guid: af9ca9989ac02614cbf84fd4891bf978, type: 2}
+          m_ObjectArgumentAssemblyTypeName: ItemScripts.WeaponSO, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

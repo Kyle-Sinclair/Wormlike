@@ -1,20 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+namespace ItemScripts
 {
-    private WeaponSO _weaponData;
-    private GameObject _weaponModel;
-    public Weapon(WeaponSO _weaponData)
+    public class Weapon : MonoBehaviour
     {
-        this._weaponData = _weaponData;
+        private WeaponSO _weaponData;
+        private GameObject _weaponModel;
+        public Weapon(WeaponSO _weaponData)
+        {
+            this._weaponData = _weaponData;
         
-    }
+        }
     
-    // Update is called once per frame
-    void Update()
-    {
+        // Update is called once per frame
+        void Update()
+        {
         
+        }
     }
 }
