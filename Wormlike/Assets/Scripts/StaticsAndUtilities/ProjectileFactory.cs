@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 namespace Projectiles
@@ -12,16 +14,15 @@ namespace Projectiles
         Projectile[] prefabs;
         List<Projectile>[] pools;
         [SerializeField]
-        bool recycle;
 
         public Projectile Get(int projectileId) {
 
             Projectile instance;
-            if (recycle) {
                 if (pools == null) {
                     CreatePools();
                 }
                 Debug.Log(projectileId);
+                
                 List<Projectile> pool = pools[projectileId];
                 int lastIndex = pool.Count - 1;
                 if (lastIndex >= 0) {
@@ -32,23 +33,12 @@ namespace Projectiles
                 else {
                     instance = Instantiate(prefabs[projectileId]);
                     instance.OriginFactory = this;
-
                     instance.ProjectileId = projectileId;
                 }
-            }
-            else {
-                instance = Instantiate(prefabs[projectileId]);
-                instance.ProjectileId = projectileId;
-            }
-       
-            return instance;
+                instance.Reset();
+                instance.rb.velocity = Vector3.zero;
+                return instance;
         }
-
-        public Projectile GetRandom() {
-            return Get(Random.Range(0, prefabs.Length));
-        }
-
-
         void CreatePools() {
             pools = new List<Projectile>[prefabs.Length];
             for (int i = 0; i < pools.Length; i++) {
@@ -56,22 +46,17 @@ namespace Projectiles
             }
 
         }
-
         public void Reclaim(Projectile projectileToRecycle) {
             if (projectileToRecycle.OriginFactory != this) {
                 Debug.LogError("Tried to reclaim shape with wrong factory.");
                 return;
             }
-            if (recycle) {
-                if (pools == null) {
-                    CreatePools();
-                }
-                pools[projectileToRecycle.ProjectileId].Add(projectileToRecycle);
-                projectileToRecycle.gameObject.SetActive(false);
+            if (pools == null) {
+                CreatePools();
             }
-            else {
-                Destroy(projectileToRecycle.gameObject);
-            }
+            pools[projectileToRecycle.ProjectileId].Add(projectileToRecycle);
+            //Debug.Log("Adding projectile with id " + projectileToRecycle.ProjectileId + " to pools");
+            projectileToRecycle.gameObject.SetActive(false);
         }
     }
 }

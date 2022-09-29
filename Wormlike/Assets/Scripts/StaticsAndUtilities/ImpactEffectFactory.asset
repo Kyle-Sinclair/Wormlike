@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b1384f8ffae98645979057f607a57e1, type: 3}
   m_Name: ImpactEffectFactory
   m_EditorClassIdentifier: 
-  explosionPrefab: {fileID: 0}
+  explosionPrefab: {fileID: 5038157323473758795, guid: 2f73d8b5af542614daae4cf10b4e9e80, type: 3}

@@ -36,7 +36,6 @@ namespace Projectiles.ImpactBehaviours
         {
             ImpactEffect effect = factory.GetImpactEffect(BehaviorType);
             effect.Initialize(projectile.transform.position,range,damage);
-            Recycle();
         }
         public override void Recycle() {
             ImpactBehaviourPool<ExplodeOnImpactBehaviour>.Reclaim(this);

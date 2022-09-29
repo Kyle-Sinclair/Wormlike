@@ -13,7 +13,6 @@ namespace ThirdPersonScripts
     {
         private bool _weaponEquipped;
         private GameObject _weaponModel;
-        private Projectile _bulletPrefab;
         private ProjectileBehaviourType _projectileBehaviourType;
         private ImpactBehaviourType _impactBehaviourType;
         private ObjectSpawner spawner = default;
@@ -93,18 +92,16 @@ namespace ThirdPersonScripts
 
         private void ShootChargable(float chargeValue)
         {
-            Projectile rocket = Instantiate(_bulletPrefab);
+            //Projectile rocket = Instantiate(_bulletPrefab);
+            Projectile projectile = spawner.GetProjectile(_weaponData.ProjectileModel);
             Vector3 direction = _munitionOriginPoint.position - _weaponHoverPoint.position;
-            rocket.direction = direction;
-            rocket.transform.position = _munitionOriginPoint.transform.position;
-            rocket.AddBehavior(_projectileBehaviourType);
-            ImpactBehaviour behaviour = rocket.AddBehavior(_impactBehaviourType);
-            behaviour.Initialize(_weaponData.Damage,_weaponData.Force,_weaponData.Range,spawner._impactEffectFactory);
-        }
-    
-        private void OnEnable()
-        {
-    
+            projectile.transform.position = _munitionOriginPoint.position;
+            projectile.direction = direction;
+            projectile.transform.position = _munitionOriginPoint.transform.position;
+            projectile.AddBehavior(_projectileBehaviourType);
+            ImpactBehaviour behaviour = projectile.AddBehavior(_impactBehaviourType);
+            behaviour.Initialize(_weaponData.Damage,_weaponData.Force,_weaponData.Range,spawner._impactEffectFactory);  
+           
         }
 
         public void EquipWeapon(WeaponSO _weaponData)
@@ -116,8 +113,8 @@ namespace ThirdPersonScripts
             this._weaponData = _weaponData;
             _weaponModel = Instantiate(_weaponData.weaponModel);
             _weaponModel.transform.parent = this.transform;
-            _bulletPrefab = _weaponData.bulletPrefab;
             _weaponModel.transform.position = _weaponHoverPoint.position;
+            _weaponModel.transform.localRotation =  Quaternion.Euler(_shotAngle, 0f,0f);
             _projectileBehaviourType = _weaponData.ProjectileBehaviour;
             _munitionOriginPoint = _weaponModel.transform.Find("MunitionOriginTransform");
             _isChargable = _weaponData.Chargable;

@@ -11,6 +11,7 @@ namespace Projectiles.ProjectileBehaviours
 			
 		}
 		public override void GameUpdate(Projectile projectile) {
+			Vector3 pos = projectile.transform.localPosition;
 			projectile.transform.localPosition += projectile.direction * (_speed * Time.deltaTime);
 		}
 
@@ -23,10 +24,10 @@ namespace Projectiles.ProjectileBehaviours
 
 		public override void Initialize()
 		{
-			throw new System.NotImplementedException();
 		}
 
 		public override void Recycle() {
+			//Debug.Log("Recycling projectile behavior");
 			ProjectileBehaviorPool<LinearMovementProjectileBehaviour>.Reclaim(this);
 		}
 	}

@@ -11,14 +11,14 @@ namespace ManagerScripts
     public class TurnManager : MonoBehaviour
     {
         private WormController _currentlyControlled;
-        [SerializeField] public List<Team> Teams;
+        [SerializeField] public List<TeamManager> Teams;
 
         private int _currentTeamIndex;
         [SerializeField] private CinemachineFreeLook _vcam;
 
         private void Awake()
         {
-            Teams = new List<Team>();
+            Teams = new List<TeamManager>();
             _currentTeamIndex = 0;
             _vcam = FindObjectOfType<CinemachineFreeLook>();
         }
@@ -40,7 +40,7 @@ namespace ManagerScripts
             for (int i = 0; i < numberOfTeams; i++)
             {
                 Debug.Log("Adding a team list");
-                Teams.Add(new Team());
+                Teams.Add(new TeamManager());
             }
         }
         public void BeginTurns()

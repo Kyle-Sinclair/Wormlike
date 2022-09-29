@@ -26,7 +26,7 @@ namespace Projectiles.ImpactBehaviours
 #if UNITY_EDITOR
 			behavior.IsReclaimed = true;
 #endif
-
+			//Debug.Log("Reclaiming behaviour");
 			stack.Push(behavior);
 		}
 	}

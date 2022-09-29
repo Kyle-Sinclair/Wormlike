@@ -1,6 +1,7 @@
 using Projectiles;
 using Projectiles.ImpactBehaviours;
 using Projectiles.ProjectileBehaviours;
+using StaticsAndUtilities;
 using UnityEngine;
 
 namespace ItemScripts
@@ -15,7 +16,7 @@ namespace ItemScripts
         [SerializeField] public GameObject weaponModel;
 
         [SerializeField] public Projectile bulletPrefab;
-
+        public ProjectileModelIndex ProjectileModel;
         [SerializeField] public ProjectileBehaviourType ProjectileBehaviour;
         [SerializeField] public ImpactBehaviourType ImpactBehaviourType;
         [SerializeField] public float speed;

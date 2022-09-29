@@ -3,12 +3,12 @@ using ThirdPersonScripts;
 
 namespace ManagerScripts
 {
-    public class Team
+    public class TeamManager
     {
         private List<WormController> _teamMembers;
         private int _currentPlayerIndex;
         public bool HasPlayers => _teamMembers.Count > 0;
-        public Team()
+        public TeamManager()
         {
             _teamMembers = new List<WormController>();
             _currentPlayerIndex = -1;

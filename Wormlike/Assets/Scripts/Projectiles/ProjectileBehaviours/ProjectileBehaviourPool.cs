@@ -27,7 +27,6 @@ namespace Projectiles.ProjectileBehaviours
 #if UNITY_EDITOR
 			behavior.IsReclaimed = true;
 #endif
-
 			stack.Push(behavior);
 		}
 	}

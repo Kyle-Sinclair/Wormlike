@@ -26,6 +26,8 @@ namespace Projectiles
 			}
 		}
 		int projectileId = int.MinValue;
+		[SerializeField]
+		public Rigidbody rb;
 		public ProjectileFactory OriginFactory
 		{
 			get {
@@ -52,6 +54,9 @@ namespace Projectiles
 			Debug.LogError("Forgot to support " + type);
 			return null;
 		}
+
+		
+
 		public ImpactBehaviour AddBehavior (ImpactBehaviourType type) {
 			switch (type) {
 				case ImpactBehaviourType.ExplodeOnImpact:
@@ -73,32 +78,50 @@ namespace Projectiles
 
 		private void OnCollisionEnter(Collision collision)
 		{
-			if(!hasImpacted)
+			if (!hasImpacted)
+			{
 				hasImpacted = true;
 
-				for (int i = 0; i < _impactBehaviourList.Count; i++) {
-					Debug.Log("Going through behaviour list");
+				for (int i = 0; i < _impactBehaviourList.Count; i++)
+				{
+					//Debug.Log("Going through behaviour list");
 					_impactBehaviourList[i].Trigger(this);
 				}
-			Recycle();
-		}
 
-		public void GameUpdate() {
-			for (int i = 0; i < projectileBehaviorList.Count; i++) {
-				//Debug.Log("Going through behaviour list");
-				projectileBehaviorList[i].GameUpdate(this);
+				Recycle();
 			}
 		}
 
-		public void Recycle() {
+		public void Reset()
+		{
+			hasImpacted = false;
+			direction = Vector3.zero;
+		}
+		public void GameUpdate() {
+			for (int i = 0; i < projectileBehaviorList.Count; i++) {
+				//Debug.Log("Going through projectile behaviour list");
+				projectileBehaviorList[i].GameUpdate(this);
+			}
+			
+		}
+
+		public void Recycle()
+		{
+			Debug.Log("Calling recycle on this projectile");
 			for (int i = 0; i < projectileBehaviorList.Count; i++) {
 				projectileBehaviorList[i].Recycle();
 			}
-			Destroy(this.GameObject());
-			//OriginFactory.Reclaim(this);
+			projectileBehaviorList.Clear();
+			for (int i = 0; i < projectileBehaviorList.Count; i++) {
+				_impactBehaviourList[i].Recycle();
+			}
+			_impactBehaviourList.Clear();
+
+			OriginFactory.Reclaim(this);
 		}
 
 		public void Update() {
+			
 			GameUpdate();
 		}
 	

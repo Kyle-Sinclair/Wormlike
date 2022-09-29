@@ -17,11 +17,11 @@ using UnityEngine;
 
         public ImpactEffect GetImpactEffect(ImpactBehaviourType behaviourType)
         {
-            Debug.Log("Attempting to instantiate effect");
+            //Debug.Log("Attempting to instantiate effect");
             switch (behaviourType)
             {
                 case ImpactBehaviourType.ExplodeOnImpact :
-                    Debug.Log("Attempting to instantiate explosion effect");
+                    //Debug.Log("Attempting to instantiate explosion effect");
 
                     return Get(explosionPrefab); 
                 default :    return null;
