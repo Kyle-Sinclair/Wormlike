@@ -14,7 +14,7 @@ namespace UIScripts
         }
         public void SetHealth(int health)
         {
-            Debug.Log("Health component setting health to " + health);
+            //Debug.Log("Health component setting health to " + health);
             _currentHealth = health;
             _hitPoints.text = _currentHealth.ToString();
         

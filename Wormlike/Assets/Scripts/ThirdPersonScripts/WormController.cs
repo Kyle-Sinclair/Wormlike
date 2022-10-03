@@ -12,12 +12,16 @@ namespace ThirdPersonScripts
     public class WormController : MonoBehaviour
     {
         private PlayerInput _input;
+        public int TeamMemberIndex { get; set; }
+        public bool IsActivePlayer;
         private MoveBehaviour _moveController; 
         private JumpAndGravityBehaviour _jumpController;
         private WeaponryController _weaponryController;
         private CharacterController _characterController;
         [SerializeField]
-        private HealthComponent Health;
+        private HealthComponent health;
+
+        private Transform CameraTarget { get; set; }
         void Awake()
         {
             _input = GetComponent<PlayerInput>();
@@ -25,65 +29,58 @@ namespace ThirdPersonScripts
             _moveController = GetComponent<MoveBehaviour>();
             _jumpController =  GetComponent<JumpAndGravityBehaviour>();
             _weaponryController = GetComponent<WeaponryController>();
-            Health = GetComponentInChildren<HealthComponent>();
+            health = GetComponentInChildren<HealthComponent>();
+            CameraTarget = transform.Find("Camera Target").transform;
             DeactivateAsControllable();
 
-        }
-    
-        private void OnEnable()
-        {
-            GetComponentInChildren<HealthComponent>().onDeath += Die;
-        }
-        private void OnDisable()
-        {
-            GetComponentInChildren<HealthComponent>().onDeath -= Die;
         }
         // Update is called once per frame
         void FixedUpdate()
         {
-            UpdateState();
             Move();
         }
         private void Move()
         {
             _characterController.Move(_moveController.XZContribution() + _jumpController.YContribution());
         }
-
-        private void UpdateState()
-        {
-      
-        }
         public void ActivateAsControllable()
         {
+            IsActivePlayer = true;
             _input.ActivateInput();
         }
         public void DeactivateAsControllable()
         {
+            IsActivePlayer = false;
             _input.DeactivateInput();
         }
-
-        private enum State
+        public Transform GetCameraTarget()
         {
-            Moving,
-            Shooting,
-            Finishing,
-            Waiting
+            return CameraTarget;
         }
-
         public void EquipWeapon(WeaponSO weaponData)
         {
             _weaponryController.EquipWeapon(weaponData);
         }
-
-        public void TakeDamage(int damage)
-        {
-            Debug.Log("Player says I'm taking this much damage " + damage);
-            Health.TakeDamage(damage);
-        }
-
         void Die()
         {
+            onDeath?.Invoke(this);
             Destroy(this.gameObject);
+        }
+        public delegate void OnDeath(WormController character);
+        public OnDeath onDeath;
+        
+        private void OnEnable()
+        {
+            if (!IsActivePlayer)
+            {
+                
+                _input.DeactivateInput();
+            }
+            health.onDeath += Die;
+        }
+        private void OnDisable()
+        {
+            health.onDeath -= Die;
         }
     }
 }

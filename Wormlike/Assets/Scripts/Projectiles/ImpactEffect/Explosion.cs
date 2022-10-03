@@ -46,18 +46,19 @@ public class Explosion : ImpactEffect
             transform.localPosition, blastRadius,_layerMask
         ); 
         Debug.Log("This number of targets found " + targets.Length);
-        // int BufferedCount = Physics.OverlapSphere(
-        //     transform.localPosition, blastRadius, targetsBuffer,_layerMask
-        // );
-        //Debug.Log("This number of targets found" + BufferedCount);
-        // if (BufferedCount > 0)
-        // {
-        //     foreach (var target in targetsBuffer)
-        //     {
-        //         var playerHealth = target.GetComponentInParent<HealthComponent>();
-        //         playerHealth.TakeDamage((int)damage);
-        //     }
-        // }
+
+        if (targets.Length <= 0) return;
+        
+        foreach (var target in targets)
+        {
+            
+            //Debug.Log(target.name);
+            HealthComponent playerHealth = target.GetComponentInChildren<HealthComponent>();
+            var closestPoint = target.ClosestPoint(transform.localPosition);
+            var distance = Vector3.Distance(closestPoint,transform.position);
+            var explosionDamageDropOff = Mathf.InverseLerp(blastRadius, 0, distance);
+            playerHealth.TakeDamage((int)(damage * explosionDamageDropOff));
+        }
     }
     public void Update()
     {

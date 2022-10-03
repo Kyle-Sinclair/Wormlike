@@ -9,7 +9,6 @@ namespace Projectiles.ImpactBehaviours
         private float force { get; set; }
         private float damage  { get; set; }
         private float range  { get; set; }
-        private ImpactEffectFactory _impactEffectFactory = default;
         public ExplodeOnImpactBehaviour()
         {
             
@@ -25,16 +24,11 @@ namespace Projectiles.ImpactBehaviours
             factory = _impactEffectFactory;
         }
 
-        public override ImpactBehaviourType BehaviorType
-        {
-            get {
-                return ImpactBehaviourType.ExplodeOnImpact;
-            }
-        }
+        public override ImpactBehaviourType BehaviorType => ImpactBehaviourType.ExplodeOnImpact;
 
         public override void Trigger(Projectile projectile)
         {
-            ImpactEffect effect = factory.GetImpactEffect(BehaviorType);
+            var effect = factory.GetImpactEffect(BehaviorType);
             effect.Initialize(projectile.transform.position,range,damage);
         }
         public override void Recycle() {

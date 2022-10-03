@@ -16,10 +16,9 @@ namespace Projectiles.ProjectileBehaviours
             }
         }
 #endif
-        public abstract void Initialize();
+        public abstract void Initialize(Projectile projectile,float charge, float speed);
         public abstract void Recycle();
         public abstract void GameUpdate(Projectile projectile);
-
         public abstract ProjectileBehaviourType BehaviorType { get; }
   
     }

@@ -9,11 +9,11 @@ namespace Projectiles
 {
 	public class Projectile : MonoBehaviour
 	{
-
 		List<ProjectileBehaviour> projectileBehaviorList = new List<ProjectileBehaviour>();
 		List<ImpactBehaviour> _impactBehaviourList = new List<ImpactBehaviour>();
 		public Vector3 direction;
-		private bool hasImpacted = false;
+		private float _age = 0;
+		private bool _hasImpacted = false;
 		public int ProjectileId
 		{
 			get {
@@ -48,15 +48,16 @@ namespace Projectiles
 			switch (type) {
 				case ProjectileBehaviourType.LinearMovement:
 					return AddProjectileBehavior<LinearMovementProjectileBehaviour>();
-				case ProjectileBehaviourType.ArcMovement:
-					return AddProjectileBehavior<ArcBehaviour>();
+				case ProjectileBehaviourType.LinearAcceleratingMovement:
+					return AddProjectileBehavior<LinearAcceleratingMovementProjectileBehaviour>();
+				case ProjectileBehaviourType.TriangleMovement:
+					return AddProjectileBehavior<TriangleBehaviour>();
+				case ProjectileBehaviourType.LobMovement:
+					return AddProjectileBehavior<LobBehaviour>();
 			}
 			Debug.LogError("Forgot to support " + type);
 			return null;
 		}
-
-		
-
 		public ImpactBehaviour AddBehavior (ImpactBehaviourType type) {
 			switch (type) {
 				case ImpactBehaviourType.ExplodeOnImpact:
@@ -78,36 +79,26 @@ namespace Projectiles
 
 		private void OnCollisionEnter(Collision collision)
 		{
-			if (!hasImpacted)
+			if (!_hasImpacted)
 			{
-				hasImpacted = true;
-
+				_hasImpacted = true;
 				for (int i = 0; i < _impactBehaviourList.Count; i++)
 				{
-					//Debug.Log("Going through behaviour list");
 					_impactBehaviourList[i].Trigger(this);
 				}
-
 				Recycle();
 			}
 		}
-
 		public void Reset()
 		{
-			hasImpacted = false;
+			_hasImpacted = false;
+			_age = 0;
 			direction = Vector3.zero;
+			rb.velocity = Vector3.zero;
+			rb.rotation = Quaternion.identity;
 		}
-		public void GameUpdate() {
-			for (int i = 0; i < projectileBehaviorList.Count; i++) {
-				//Debug.Log("Going through projectile behaviour list");
-				projectileBehaviorList[i].GameUpdate(this);
-			}
-			
-		}
-
 		public void Recycle()
 		{
-			Debug.Log("Calling recycle on this projectile");
 			for (int i = 0; i < projectileBehaviorList.Count; i++) {
 				projectileBehaviorList[i].Recycle();
 			}
@@ -116,15 +107,23 @@ namespace Projectiles
 				_impactBehaviourList[i].Recycle();
 			}
 			_impactBehaviourList.Clear();
-
 			OriginFactory.Reclaim(this);
 		}
-
-		public void Update() {
-			
-			GameUpdate();
+		public void Update()
+		{
+			_age += Time.deltaTime;
+			if (_age > 50f)
+			{
+				Recycle();
+				return;
+			}
 		}
-	
-	
+		public void FixedUpdate()
+		{
+			for (int i = 0; i < projectileBehaviorList.Count; i++) {
+				//Debug.Log("Going through projectile behaviour list");
+				projectileBehaviorList[i].GameUpdate(this);
+			}		
+		}
 	}
 }

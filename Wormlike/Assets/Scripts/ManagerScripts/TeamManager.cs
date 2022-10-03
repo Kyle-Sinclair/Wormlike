@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using ThirdPersonScripts;
+using Unity.VisualScripting;
+using UnityEngine;
 
 namespace ManagerScripts
 {
@@ -7,9 +9,11 @@ namespace ManagerScripts
     {
         private List<WormController> _teamMembers;
         private int _currentPlayerIndex;
+        public bool _isActiveTeam;
         public bool HasPlayers => _teamMembers.Count > 0;
         public TeamManager()
         {
+            _isActiveTeam = false;
             _teamMembers = new List<WormController>();
             _currentPlayerIndex = -1;
         }
@@ -21,15 +25,27 @@ namespace ManagerScripts
         }
         public void RegisterPlayer(WormController newTeamMember)
         {
+            newTeamMember.onDeath += RemoveWormOnDeath;
             _teamMembers.Add(newTeamMember);
+            newTeamMember.TeamMemberIndex = _teamMembers.Count;
         }
-
+        private void RemoveWormOnDeath(WormController deadWorm)
+        {
+            deadWorm.onDeath -= RemoveWormOnDeath;
+            _teamMembers.Remove(deadWorm);
+            if (!HasPlayers)
+            {
+                onSurrender?.Invoke(this);
+            }
+        }
         private void IncrementCurrentPlayer()
         {
             _currentPlayerIndex++;
             _currentPlayerIndex %= _teamMembers.Count;
         }
-
-    
+        public delegate void OnSurrender(TeamManager surrenderingTeam);
+        public OnSurrender onSurrender;
+       
+      
     }
 }

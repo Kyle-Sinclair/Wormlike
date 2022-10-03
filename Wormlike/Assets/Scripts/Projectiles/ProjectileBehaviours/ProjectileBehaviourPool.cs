@@ -5,15 +5,13 @@ namespace Projectiles.ProjectileBehaviours
 {
 	public static class ProjectileBehaviorPool<T> where T : ProjectileBehaviour, new() {
 		static Stack<T> stack = new Stack<T>();
-
-
 		public static T Get() {
 			if (stack.Count > 0) {
 				T behavior = stack.Pop();
 #if UNITY_EDITOR
 				behavior.IsReclaimed = false;
 #endif
-				behavior.Initialize();
+				//behavior.Initialize(0, 0);
 				return behavior;
 			}
 #if UNITY_EDITOR

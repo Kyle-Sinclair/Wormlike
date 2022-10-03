@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
 using Cinemachine;
 using ItemScripts;
 using ThirdPersonScripts;
@@ -11,8 +12,8 @@ namespace ManagerScripts
     public class TurnManager : MonoBehaviour
     {
         private WormController _currentlyControlled;
-        [SerializeField] public List<TeamManager> Teams;
-
+        private List<TeamManager> Teams;
+        private Timer turntimer;
         private int _currentTeamIndex;
         [SerializeField] private CinemachineFreeLook _vcam;
 
@@ -31,36 +32,36 @@ namespace ManagerScripts
         }
         public void RegisterPlayer(WormController newTeamMember, int teamNumber)
         {
-
-            Debug.Log("Registering player to " + teamNumber);
             Teams[teamNumber].RegisterPlayer(newTeamMember);
         }
         public void InitializeLists(int numberOfTeams)
         {
             for (int i = 0; i < numberOfTeams; i++)
             {
-                Debug.Log("Adding a team list");
-                Teams.Add(new TeamManager());
+                //Debug.Log("Adding a team list");
+                TeamManager newTeam = new TeamManager();
+                newTeam.onSurrender += RemoveTeam;
+                Teams.Add(newTeam);
             }
         }
         public void BeginTurns()
         {
             _currentlyControlled = Teams[_currentTeamIndex].NextTeamMember();
+            Teams[_currentTeamIndex]._isActiveTeam = true;
             _currentlyControlled.ActivateAsControllable();
+            _currentlyControlled.IsActivePlayer = true;
             ChangeCameraTarget(_currentlyControlled);
-            // _currentlyControlled.PrioritizeVirtualCamera();
         }
         private void nextTurn()
         {
-            // _currentlyControlled.DeprioritizeVirtualCamera();
-
             _currentlyControlled.DeactivateAsControllable();
+            Teams[_currentTeamIndex]._isActiveTeam = false;
             _currentTeamIndex++;
             _currentTeamIndex %= Teams.Count;
             _currentlyControlled = Teams[_currentTeamIndex].NextTeamMember();
+            Teams[_currentTeamIndex]._isActiveTeam = true;
             _currentlyControlled.ActivateAsControllable();
             ChangeCameraTarget(_currentlyControlled);
-            // _currentlyControlled.PrioritizeVirtualCamera();
         }
 
         public void EquipWeaponOnActiveWorm(WeaponSO weaponData)
@@ -69,9 +70,17 @@ namespace ManagerScripts
         }
         private void ChangeCameraTarget(WormController character)
         {
-            Transform cameraTarget = character.transform.Find("Camera Target").transform;
-            _vcam.Follow = cameraTarget;
-            _vcam.LookAt = cameraTarget;
+            _vcam.Follow = character.GetCameraTarget();
+            _vcam.LookAt = character.GetCameraTarget();
+        }
+
+        private void RemoveTeam(TeamManager surrenderingTeam)
+        {
+            Teams.Remove(surrenderingTeam);
+            if (Teams.Count == 1)
+            {
+                Debug.Log("We have a winner");
+            }
         }
     }
 }

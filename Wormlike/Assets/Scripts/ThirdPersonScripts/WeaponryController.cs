@@ -13,69 +13,57 @@ namespace ThirdPersonScripts
     {
         private bool _weaponEquipped;
         private GameObject _weaponModel;
-        private ProjectileBehaviourType _projectileBehaviourType;
-        private ImpactBehaviourType _impactBehaviourType;
         private ObjectSpawner spawner = default;
-        private bool _isChargable;
         private bool _charging;
         private float _charge;
-        [SerializeField] public Transform _weaponHoverPoint;
-        [SerializeField] public Transform _munitionOriginPoint;
+        [SerializeField]private Transform _weaponHoverPoint;
+        private Transform _munitionOriginPoint;
         private WeaponSO _weaponData;
         private float _shotAngle;
-
         public void Awake()
         {
             _charge = 0f;
-            _shotAngle = 45f;
+            _shotAngle = 90f;
             spawner = FindObjectOfType<ObjectSpawner>();
-      
+            _weaponHoverPoint = transform.Find("WeaponAttachmentPoint");
         }
         public void OnChangeAngle(InputAction.CallbackContext context)
         {
             if (context.performed)
-            {
-                Debug.Log("Entering Change angle");
+            { 
                 _shotAngle += context.ReadValue<float>() * 5;
                 _shotAngle = Mathf.Clamp(_shotAngle,0.0f,90.0f);
-                //print(_shotAngle);
-                //_weaponModel.transform.localRotation = Quaternion.Euler(_shotAngle, _weaponModel.transform.eulerAngles.y,  _weaponModel.transform.eulerAngles.z);
                 _weaponModel.transform.localRotation =  Quaternion.Euler(_shotAngle, 0f,0f);
-                //print(_weaponModel.name);
-            }
-        }
-    
-        public void PrimaryFire(InputAction.CallbackContext context)
-        {
-            if (!_weaponEquipped)
-            {
-                return;
-            }
-            if (_isChargable)
-            {
-                FireChargable(context);
-            }
-            else
-            {
-                FireNonChargable();
             }
         }
 
-        private void FireNonChargable()
+        public void PrimaryFire(InputAction.CallbackContext context)
         {
-        
+
+            if (_weaponEquipped && _weaponData.Chargable)
+            {
+                ShootChargable(context);
+            }
+            else if(_weaponEquipped && context.canceled)
+            {
+                Shoot(0);
+            }
         }
-        private void FireChargable(InputAction.CallbackContext context)
+        
+
+        private void ShootChargable(InputAction.CallbackContext context)
         {
             if(context.performed) // the key has been pressed
             {
                 _charging = true;
                 StartCoroutine(ChargeWeapon());
             }
+                
             if(context.canceled) //the key has been released
             {
+                Debug.Log("Exiting charging coroutine");
                 _charging = false;
-                ShootChargable(_charge);
+                Shoot(_charge);
                 _charge = 0;
             }
         }
@@ -86,38 +74,47 @@ namespace ThirdPersonScripts
             {
                 _charge += Time.deltaTime;
                 yield return null;
-
             }
         }
-
-        private void ShootChargable(float chargeValue)
+        
+        private void Shoot(float chargeValue = 0)
         {
-            //Projectile rocket = Instantiate(_bulletPrefab);
+            if (!_weaponEquipped){
+                return;
+            }
+            Debug.Log("charge value = " + chargeValue);
             Projectile projectile = spawner.GetProjectile(_weaponData.ProjectileModel);
-            Vector3 direction = _munitionOriginPoint.position - _weaponHoverPoint.position;
-            projectile.transform.position = _munitionOriginPoint.position;
-            projectile.direction = direction;
-            projectile.transform.position = _munitionOriginPoint.transform.position;
-            projectile.AddBehavior(_projectileBehaviourType);
-            ImpactBehaviour behaviour = projectile.AddBehavior(_impactBehaviourType);
-            behaviour.Initialize(_weaponData.Damage,_weaponData.Force,_weaponData.Range,spawner._impactEffectFactory);  
-           
+            OrientProjectile(projectile);
+            ProjectileBehaviour projectileMovementBehaviour  = projectile.AddBehavior(_weaponData.ProjectileBehaviour);
+            projectileMovementBehaviour.Initialize(projectile,chargeValue,_weaponData.speed);
+            ImpactBehaviour behaviour = projectile.AddBehavior(_weaponData.ImpactBehaviourType);
+            behaviour.Initialize(_weaponData.damage,_weaponData.Force,_weaponData.Range,spawner._impactEffectFactory);
         }
 
-        public void EquipWeapon(WeaponSO _weaponData)
+        private void OrientProjectile(Projectile projectile)
         {
-            if (this._weaponData == _weaponData)
+            var position = _munitionOriginPoint.position;
+            Vector3 direction = position - _weaponHoverPoint.position;
+            projectile.transform.position = position;
+            projectile.direction = direction;
+        }
+
+        public void EquipWeapon(WeaponSO weaponData)
+        {
+            if (this._weaponData == weaponData)
             {
                 return;
             }
-            this._weaponData = _weaponData;
-            _weaponModel = Instantiate(_weaponData.weaponModel);
-            _weaponModel.transform.parent = this.transform;
+
+            if (_weaponEquipped)
+            {
+                Destroy(_weaponModel);
+            }
+            this._weaponData = weaponData;
+            _weaponModel = Instantiate(weaponData.weaponModel, this.transform, false);
             _weaponModel.transform.position = _weaponHoverPoint.position;
             _weaponModel.transform.localRotation =  Quaternion.Euler(_shotAngle, 0f,0f);
-            _projectileBehaviourType = _weaponData.ProjectileBehaviour;
             _munitionOriginPoint = _weaponModel.transform.Find("MunitionOriginTransform");
-            _isChargable = _weaponData.Chargable;
             _charging = false;
             _weaponEquipped = true;
         }

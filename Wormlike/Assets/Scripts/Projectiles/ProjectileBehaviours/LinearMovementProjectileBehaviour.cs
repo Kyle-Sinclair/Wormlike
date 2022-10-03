@@ -8,26 +8,17 @@ namespace Projectiles.ProjectileBehaviours
 		private float _speed = 5f;
 		public LinearMovementProjectileBehaviour()
 		{
-			
 		}
 		public override void GameUpdate(Projectile projectile) {
 			Vector3 pos = projectile.transform.localPosition;
-			projectile.transform.localPosition += projectile.direction * (_speed * Time.deltaTime);
+			projectile.rb.MovePosition(pos + projectile.direction * (_speed * Time.deltaTime));
 		}
-
-		public override ProjectileBehaviourType BehaviorType
+		public override ProjectileBehaviourType BehaviorType => ProjectileBehaviourType.LinearMovement;
+		public override void Initialize(Projectile projectile, float charge, float speed)
 		{
-			get {
-				return ProjectileBehaviourType.LinearMovement;
-			}
+			_speed = speed;
 		}
-
-		public override void Initialize()
-		{
-		}
-
 		public override void Recycle() {
-			//Debug.Log("Recycling projectile behavior");
 			ProjectileBehaviorPool<LinearMovementProjectileBehaviour>.Reclaim(this);
 		}
 	}

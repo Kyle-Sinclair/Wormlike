@@ -9,10 +9,6 @@ public class ObjectSpawner : MonoBehaviour
 {
     [SerializeField] public ProjectileFactory _projectileFactory = default;
     [SerializeField] public ImpactEffectFactory _impactEffectFactory = default;
-    
-
-    
-
     public Projectile GetProjectile(ProjectileModelIndex modelIndex)
     {
         return _projectileFactory.Get(ProjectileModelMethods.GetIndex(modelIndex));
@@ -21,6 +17,4 @@ public class ObjectSpawner : MonoBehaviour
     {
         return _impactEffectFactory;
     }
-    
-
 }

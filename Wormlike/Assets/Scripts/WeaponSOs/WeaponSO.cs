@@ -9,21 +9,16 @@ namespace ItemScripts
     [CreateAssetMenu(fileName = "Weapon",  menuName = "ScriptableObjects/WeaponSO")]
     public class WeaponSO : ScriptableObject
     {
-        [SerializeField]
         public bool Chargable;
-
         public string weaponName;
-        [SerializeField] public GameObject weaponModel;
-
-        [SerializeField] public Projectile bulletPrefab;
+        public GameObject weaponModel;
         public ProjectileModelIndex ProjectileModel;
-        [SerializeField] public ProjectileBehaviourType ProjectileBehaviour;
-        [SerializeField] public ImpactBehaviourType ImpactBehaviourType;
-        [SerializeField] public float speed;
-
-        [SerializeField] public float Damage;
-        [SerializeField] public float Force;
-        [SerializeField] public float Range;
+        public ProjectileBehaviourType ProjectileBehaviour;
+        public ImpactBehaviourType ImpactBehaviourType;
+        public float speed;
+        public float damage;
+        public float Force;
+        public float Range;
 
     }
 }
