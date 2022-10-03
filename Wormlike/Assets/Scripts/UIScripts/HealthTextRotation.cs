@@ -4,15 +4,15 @@ namespace UIScripts
 {
     public class HealthTextRotation : MonoBehaviour
     {
-        private Camera m_Camera;
+        private Camera _mCamera;
 
         void Start()
         {
-            m_Camera = Camera.main;
+            _mCamera = Camera.main;
         }
         void Update()
         {
-            transform.rotation = m_Camera.transform.rotation;
+            transform.rotation = _mCamera.transform.rotation;
         
         }
     }

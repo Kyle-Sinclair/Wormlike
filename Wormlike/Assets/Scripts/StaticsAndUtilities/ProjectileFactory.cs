@@ -10,14 +10,14 @@ namespace Projectiles
     {
         [SerializeField]
         Projectile[] prefabs;
-        List<Projectile>[] pools;
+        List<Projectile>[] _pools;
         public Projectile Get(int projectileId) {
 
             Projectile instance;
-                if (pools == null) {
+                if (_pools == null) {
                     CreatePools();
                 }
-                List<Projectile> pool = pools[projectileId];
+                List<Projectile> pool = _pools[projectileId];
                 int lastIndex = pool.Count - 1;
                 if (lastIndex >= 0) {
                     instance = pool[lastIndex];
@@ -34,9 +34,9 @@ namespace Projectiles
                 return instance;
         }
         void CreatePools() {
-            pools = new List<Projectile>[prefabs.Length];
-            for (int i = 0; i < pools.Length; i++) {
-                pools[i] = new List<Projectile>();
+            _pools = new List<Projectile>[prefabs.Length];
+            for (int i = 0; i < _pools.Length; i++) {
+                _pools[i] = new List<Projectile>();
             }
         }
         public void Reclaim(Projectile projectileToRecycle) {
@@ -44,10 +44,10 @@ namespace Projectiles
                 Debug.LogError("Tried to reclaim shape with wrong factory.");
                 return;
             }
-            if (pools == null) {
+            if (_pools == null) {
                 CreatePools();
             }
-            pools[projectileToRecycle.ProjectileId].Add(projectileToRecycle);
+            _pools[projectileToRecycle.ProjectileId].Add(projectileToRecycle);
             projectileToRecycle.gameObject.SetActive(false);
         }
     }

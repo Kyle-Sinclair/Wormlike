@@ -1,11 +1,12 @@
 using System.Collections;
 using System.IO.Enumeration;
-using ItemScripts;
 using Projectiles;
 using Projectiles.ImpactBehaviours;
 using Projectiles.ProjectileBehaviours;
+using StaticsAndUtilities;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using WeaponSOs;
 
 namespace ThirdPersonScripts
 {
@@ -13,10 +14,10 @@ namespace ThirdPersonScripts
     {
         private bool _weaponEquipped;
         private GameObject _weaponModel;
-        private ObjectSpawner spawner = default;
+        private ObjectSpawner _spawner = default;
         private bool _charging;
         private float _charge;
-        [SerializeField]private Transform _weaponHoverPoint;
+        [SerializeField]private Transform weaponHoverPoint;
         private Transform _munitionOriginPoint;
         private WeaponSO _weaponData;
         private float _shotAngle;
@@ -24,8 +25,8 @@ namespace ThirdPersonScripts
         {
             _charge = 0f;
             _shotAngle = 90f;
-            spawner = FindObjectOfType<ObjectSpawner>();
-            _weaponHoverPoint = transform.Find("WeaponAttachmentPoint");
+            _spawner = FindObjectOfType<ObjectSpawner>();
+            weaponHoverPoint = transform.Find("WeaponAttachmentPoint");
         }
         public void OnChangeAngle(InputAction.CallbackContext context)
         {
@@ -40,7 +41,7 @@ namespace ThirdPersonScripts
         public void PrimaryFire(InputAction.CallbackContext context)
         {
 
-            if (_weaponEquipped && _weaponData.Chargable)
+            if (_weaponEquipped && _weaponData.chargable)
             {
                 ShootChargable(context);
             }
@@ -83,18 +84,18 @@ namespace ThirdPersonScripts
                 return;
             }
             Debug.Log("charge value = " + chargeValue);
-            Projectile projectile = spawner.GetProjectile(_weaponData.ProjectileModel);
+            Projectile projectile = _spawner.GetProjectile(_weaponData.projectileModel);
             OrientProjectile(projectile);
-            ProjectileBehaviour projectileMovementBehaviour  = projectile.AddBehavior(_weaponData.ProjectileBehaviour);
+            ProjectileBehaviour projectileMovementBehaviour  = projectile.AddBehavior(_weaponData.projectileBehaviour);
             projectileMovementBehaviour.Initialize(projectile,chargeValue,_weaponData.speed);
-            ImpactBehaviour behaviour = projectile.AddBehavior(_weaponData.ImpactBehaviourType);
-            behaviour.Initialize(_weaponData.damage,_weaponData.Force,_weaponData.Range,spawner._impactEffectFactory);
+            ImpactBehaviour behaviour = projectile.AddBehavior(_weaponData.impactBehaviourType);
+            behaviour.Initialize(_weaponData.damage,_weaponData.force,_weaponData.range,_spawner.impactEffectFactory);
         }
 
         private void OrientProjectile(Projectile projectile)
         {
             var position = _munitionOriginPoint.position;
-            Vector3 direction = position - _weaponHoverPoint.position;
+            Vector3 direction = position - weaponHoverPoint.position;
             projectile.transform.position = position;
             projectile.direction = direction;
         }
@@ -112,7 +113,7 @@ namespace ThirdPersonScripts
             }
             this._weaponData = weaponData;
             _weaponModel = Instantiate(weaponData.weaponModel, this.transform, false);
-            _weaponModel.transform.position = _weaponHoverPoint.position;
+            _weaponModel.transform.position = weaponHoverPoint.position;
             _weaponModel.transform.localRotation =  Quaternion.Euler(_shotAngle, 0f,0f);
             _munitionOriginPoint = _weaponModel.transform.Find("MunitionOriginTransform");
             _charging = false;

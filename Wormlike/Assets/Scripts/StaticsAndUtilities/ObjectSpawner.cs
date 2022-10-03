@@ -1,20 +1,20 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Projectiles;
-using StaticsAndUtilities;
 using UnityEngine;
 
-public class ObjectSpawner : MonoBehaviour
+namespace StaticsAndUtilities
 {
-    [SerializeField] public ProjectileFactory _projectileFactory = default;
-    [SerializeField] public ImpactEffectFactory _impactEffectFactory = default;
-    public Projectile GetProjectile(ProjectileModelIndex modelIndex)
+    public class ObjectSpawner : MonoBehaviour
     {
-        return _projectileFactory.Get(ProjectileModelMethods.GetIndex(modelIndex));
-    }
-    public ImpactEffectFactory GetImpactEffectFactory()
-    {
-        return _impactEffectFactory;
+        [SerializeField] public ProjectileFactory projectileFactory = default;
+        [SerializeField] public ImpactEffectFactory impactEffectFactory = default;
+        public Projectile GetProjectile(ProjectileModelIndex modelIndex)
+        {
+            Debug.Log("model index = " + modelIndex);
+            return projectileFactory.Get(ProjectileModelMethods.GetIndex(modelIndex));
+        }
+        public ImpactEffectFactory GetImpactEffectFactory()
+        {
+            return impactEffectFactory;
+        }
     }
 }

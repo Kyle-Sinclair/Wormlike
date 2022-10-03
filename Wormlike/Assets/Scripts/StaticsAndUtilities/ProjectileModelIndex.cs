@@ -26,10 +26,9 @@ namespace StaticsAndUtilities
                     return 2;
                 case ProjectileModelIndex.Star:
                     return 3;
-          
             }
             Debug.Log("Asking for an unsupported projectile prefab,defaulting to rocket");
-            return 1;
+            return 0;
         }
     }
 }

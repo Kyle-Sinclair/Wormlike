@@ -14,7 +14,6 @@ namespace Projectiles.ProjectileBehaviours
     
     public static class ProjectileBehaviourTypeMethods
     {
-
         public static ProjectileBehaviour GetInstance(ProjectileBehaviourType type) {
             switch (type) {
                 case ProjectileBehaviourType.LinearMovement:
@@ -26,6 +25,22 @@ namespace Projectiles.ProjectileBehaviours
                 case ProjectileBehaviourType.LobMovement:
                     return ProjectileBehaviorPool<LobBehaviour>.Get();
             }
+            UnityEngine.Debug.Log("Forgot to support " + type);
+            return null;
+        }
+
+        public static ProjectileBehaviour GetInstance(Projectile projectile, ProjectileBehaviourType type)
+        {
+            switch (type) {
+                case ProjectileBehaviourType.LinearMovement:
+                    return projectile.AddProjectileBehavior<LinearMovementProjectileBehaviour>();
+                case ProjectileBehaviourType.LinearAcceleratingMovement:
+                    return projectile.AddProjectileBehavior<LinearAcceleratingMovementProjectileBehaviour>();
+                case ProjectileBehaviourType.TriangleMovement:
+                    return projectile.AddProjectileBehavior<TriangleBehaviour>();
+                case ProjectileBehaviourType.LobMovement:
+                    return projectile.AddProjectileBehavior<LobBehaviour>();
+            }       
             UnityEngine.Debug.Log("Forgot to support " + type);
             return null;
         }

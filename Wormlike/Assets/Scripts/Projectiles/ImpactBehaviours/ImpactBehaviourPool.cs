@@ -4,12 +4,12 @@ using UnityEngine;
 namespace Projectiles.ImpactBehaviours
 {
 	public static class ImpactBehaviourPool<T> where T : ImpactBehaviour, new() {
-		static Stack<T> stack = new Stack<T>();
+		static Stack<T> _stack = new Stack<T>();
 
 
 		public static T Get() {
-			if (stack.Count > 0) {
-				T behavior = stack.Pop();
+			if (_stack.Count > 0) {
+				T behavior = _stack.Pop();
 #if UNITY_EDITOR
 				behavior.IsReclaimed = false;
 #endif
@@ -27,7 +27,7 @@ namespace Projectiles.ImpactBehaviours
 			behavior.IsReclaimed = true;
 #endif
 			//Debug.Log("Reclaiming behaviour");
-			stack.Push(behavior);
+			_stack.Push(behavior);
 		}
 	}
 }

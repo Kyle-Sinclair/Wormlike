@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48ce0802466394b4abe0eef5f1225f5c, type: 3}
   m_Name: Lobber
   m_EditorClassIdentifier: 
-  Chargable: 0
+  chargable: 1
   weaponName: Lobber
-  weaponModel: {fileID: 0}
-  ProjectileModel: 0
-  ProjectileBehaviour: 0
-  ImpactBehaviourType: 0
-  speed: 0
-  damage: 0
-  Force: 0
-  Range: 0
+  weaponModel: {fileID: 1414511900395635625, guid: 3a2b6936158109840a6401661ea86865, type: 3}
+  projectileModel: 0
+  projectileBehaviour: 3
+  impactBehaviourType: 0
+  speed: 4
+  damage: 10
+  force: 5
+  range: 12

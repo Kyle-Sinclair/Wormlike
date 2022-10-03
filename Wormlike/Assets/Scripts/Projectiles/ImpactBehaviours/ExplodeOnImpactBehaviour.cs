@@ -6,9 +6,9 @@ namespace Projectiles.ImpactBehaviours
     public sealed class ExplodeOnImpactBehaviour : ImpactBehaviour
     {
 
-        private float force { get; set; }
-        private float damage  { get; set; }
-        private float range  { get; set; }
+        private float Force { get; set; }
+        private float Damage  { get; set; }
+        private float Range  { get; set; }
         public ExplodeOnImpactBehaviour()
         {
             
@@ -16,12 +16,12 @@ namespace Projectiles.ImpactBehaviours
         public override void GameUpdate(Projectile projectile) {
             
         }
-        public override void Initialize(float damage, float force, float range, ImpactEffectFactory _impactEffectFactory)
+        public override void Initialize(float damage, float force, float range, ImpactEffectFactory impactEffectFactory)
         {
-            this.damage = damage;
-            this.force = force;
-            this.range = range;
-            factory = _impactEffectFactory;
+            this.Damage = damage;
+            this.Force = force;
+            this.Range = range;
+            factory = impactEffectFactory;
         }
 
         public override ImpactBehaviourType BehaviorType => ImpactBehaviourType.ExplodeOnImpact;
@@ -29,7 +29,7 @@ namespace Projectiles.ImpactBehaviours
         public override void Trigger(Projectile projectile)
         {
             var effect = factory.GetImpactEffect(BehaviorType);
-            effect.Initialize(projectile.transform.position,range,damage);
+            effect.Initialize(projectile.transform.position,Range,Damage);
         }
         public override void Recycle() {
             ImpactBehaviourPool<ExplodeOnImpactBehaviour>.Reclaim(this);

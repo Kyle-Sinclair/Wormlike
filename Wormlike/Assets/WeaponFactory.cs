@@ -7,7 +7,7 @@ public class WeaponFactory : MonoBehaviour
 {
 
     [SerializeField]
-    private ProjectileFactory _projectileFactory;
+    private ProjectileFactory projectileFactory;
     
     
 }

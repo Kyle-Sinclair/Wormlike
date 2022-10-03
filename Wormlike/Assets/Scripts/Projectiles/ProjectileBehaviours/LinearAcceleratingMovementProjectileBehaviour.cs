@@ -6,11 +6,11 @@ namespace Projectiles.ProjectileBehaviours
 	{
 
 		private float _speed = 2f;
-		private float age = 0;
+		private float _age = 0;
 		
 		public override void GameUpdate(Projectile projectile)
 		{
-			age += Time.deltaTime;
+			_age += Time.deltaTime;
 			// if (age < 1f)
 			// {
 			// 	projectile.transform.localPosition += projectile.direction * ((_speed * Time.deltaTime));
@@ -20,9 +20,9 @@ namespace Projectiles.ProjectileBehaviours
 			// 	projectile.transform.localPosition += projectile.direction * ((_speed + age * 3f)  * Time.deltaTime);
 			//
 			// }
-			if (age > 1f)
+			if (_age > 1f)
 			{
-				projectile.transform.localPosition += projectile.direction * ((_speed + age * 3f) * Time.deltaTime);
+				projectile.transform.localPosition += projectile.direction * ((_speed + _age * 3f) * Time.deltaTime);
 			}
 
 		}
@@ -39,7 +39,7 @@ namespace Projectiles.ProjectileBehaviours
 		public override void Recycle()
 		{
 			
-			age = 0f;
+			_age = 0f;
 			ProjectileBehaviorPool<LinearAcceleratingMovementProjectileBehaviour>.Reclaim(this);
 		}
 	}

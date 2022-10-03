@@ -313,8 +313,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f21a9d9122a19fc448b5ec2522f822b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentHealth: 100
-  _hitPoints: {fileID: 2203910298587902076}
+  currentHealth: 100
+  hitPoints: {fileID: 2203910298587902076}
 --- !u!1 &3566847314070877931
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,7 +388,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd8a9b3001f3f6b44a0b5f1fb55fb922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsActivePlayer: 0
+  _initialHealth: 100
+  isActivePlayer: 0
   health: {fileID: 0}
 --- !u!114 &-365032184139619066
 MonoBehaviour:
@@ -560,12 +561,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ff881e5234eb724dac8ce54f65b0a3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  JumpHeight: 3.5
-  Gravity: -18
-  Grounded: 1
-  GroundedOffset: -0.14
-  GroundedRadius: 0.28
-  GroundLayers:
+  jumpHeight: 1.2
+  gravity: -10
+  grounded: 1
+  groundedOffset: -0.2
+  groundedRadius: 0.28
+  groundLayers:
     serializedVersion: 2
     m_Bits: 128
 --- !u!114 &1370576854512375956
@@ -580,9 +581,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d281d7d8af0d28644828d2aa3ed1ec86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 5
-  _mainCamTransform: {fileID: 0}
-  _turnSmoothFactor: 0.2
+  speed: 5
+  mainCamTransform: {fileID: 0}
+  turnSmoothFactor: 0.2
 --- !u!114 &-2337394792091986734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -595,7 +596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 401d3114ca6523343879330e91af4f52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponHoverPoint: {fileID: 5817271766478011467}
+  weaponHoverPoint: {fileID: 0}
 --- !u!114 &2197760568482385970
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,11 +9,11 @@ namespace ManagerScripts
     {
         private List<WormController> _teamMembers;
         private int _currentPlayerIndex;
-        public bool _isActiveTeam;
+        public bool IsActiveTeam;
         public bool HasPlayers => _teamMembers.Count > 0;
         public TeamManager()
         {
-            _isActiveTeam = false;
+            IsActiveTeam = false;
             _teamMembers = new List<WormController>();
             _currentPlayerIndex = -1;
         }
@@ -25,13 +25,13 @@ namespace ManagerScripts
         }
         public void RegisterPlayer(WormController newTeamMember)
         {
-            newTeamMember.onDeath += RemoveWormOnDeath;
+            newTeamMember.OnDeath += RemoveWormOnDeath;
             _teamMembers.Add(newTeamMember);
             newTeamMember.TeamMemberIndex = _teamMembers.Count;
         }
         private void RemoveWormOnDeath(WormController deadWorm)
         {
-            deadWorm.onDeath -= RemoveWormOnDeath;
+            deadWorm.OnDeath -= RemoveWormOnDeath;
             _teamMembers.Remove(deadWorm);
             if (!HasPlayers)
             {

@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class Explosion : ImpactEffect
 {
-    private float damage = 5f;
-    static int colorPropertyID = Shader.PropertyToID("_Color");
+    private float _damage = 5f;
+    static int _colorPropertyID = Shader.PropertyToID("_Color");
     private static MaterialPropertyBlock _propertyBlock;
     [SerializeField, Range(0f, 1f)]
     float duration = 0.5f;
@@ -17,25 +17,25 @@ public class Explosion : ImpactEffect
     AnimationCurve opacityCurve = default;
     [SerializeField]
     AnimationCurve scaleCurve = default;
-    float age;
-    static Collider[] targetsBuffer = new Collider[100];
+    float _age;
+    static Collider[] _targetsBuffer = new Collider[100];
     private LayerMask _layerMask = 1<<3;
-    float scale;
+    float _scale;
 
-    MeshRenderer meshRenderer;
+    MeshRenderer _meshRenderer;
 
     void Awake () {
         Debug.Log("Initalizing explosion");
-        meshRenderer = GetComponent<MeshRenderer>();
-        Debug.Assert(meshRenderer != null, "Explosion without renderer!");
+        _meshRenderer = GetComponent<MeshRenderer>();
+        Debug.Assert(_meshRenderer != null, "Explosion without renderer!");
         //_layerMask = LayerMask.NameToLayer("Players");
     }
     public override void Initialize (Vector3 position, float blastRadius, float damage)
     {
-        age = 0f;
+        _age = 0f;
         transform.localPosition = position;
-        scale =  (2f * blastRadius);
-        this.damage = damage;
+        _scale =  (2f * blastRadius);
+        this._damage = damage;
         DealDamage(blastRadius,damage);
     }
 
@@ -65,14 +65,14 @@ public class Explosion : ImpactEffect
         if (_propertyBlock == null) {
             _propertyBlock = new MaterialPropertyBlock();
         }
-        float t = age / duration;
+        float t = _age / duration;
         Color c = Color.clear;
         c.a = opacityCurve.Evaluate(t);
-        _propertyBlock.SetColor(colorPropertyID, c);
-        meshRenderer.SetPropertyBlock(_propertyBlock);
-        transform.localScale = Vector3.one * (scale * scaleCurve.Evaluate(t));
-        age += Time.deltaTime;
-        if (age >= duration) {
+        _propertyBlock.SetColor(_colorPropertyID, c);
+        _meshRenderer.SetPropertyBlock(_propertyBlock);
+        transform.localScale = Vector3.one * (_scale * scaleCurve.Evaluate(t));
+        _age += Time.deltaTime;
+        if (_age >= duration) {
             Destroy(this.gameObject);
         }
     }

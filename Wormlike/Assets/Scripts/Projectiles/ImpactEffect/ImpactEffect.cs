@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class ImpactEffect : MonoBehaviour
 {
-    ImpactEffectFactory originFactory;
+    ImpactEffectFactory _originFactory;
 
     public ImpactEffectFactory OriginFactory {
-        get => originFactory;
+        get => _originFactory;
         set {
-            Debug.Assert(originFactory == null, "Redefined origin factory!");
-            originFactory = value;
+            Debug.Assert(_originFactory == null, "Redefined origin factory!");
+            _originFactory = value;
         }
     }
 
@@ -19,6 +19,6 @@ public class ImpactEffect : MonoBehaviour
         
     }
     public void Recycle () {
-        originFactory.Reclaim(this);
+        _originFactory.Reclaim(this);
     }
 }

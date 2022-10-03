@@ -9,42 +9,39 @@ namespace Projectiles
 {
 	public class Projectile : MonoBehaviour
 	{
-		List<ProjectileBehaviour> projectileBehaviorList = new List<ProjectileBehaviour>();
-		List<ImpactBehaviour> _impactBehaviourList = new List<ImpactBehaviour>();
+		private List<ProjectileBehaviour> _projectileBehaviorList = new List<ProjectileBehaviour>();
+		private List<ImpactBehaviour> _impactBehaviourList = new List<ImpactBehaviour>();
 		public Vector3 direction;
 		private float _age = 0;
 		private bool _hasImpacted = false;
 		public int ProjectileId
 		{
-			get {
-				return projectileId;
-			}
+			get => _projectileId;
 			set {
-				if (projectileId == int.MinValue && value != int.MinValue) {
-					projectileId = value;
+				if (_projectileId == int.MinValue && value != int.MinValue) {
+					_projectileId = value;
 				}
 			}
 		}
-		int projectileId = int.MinValue;
+		private int _projectileId = int.MinValue;
 		[SerializeField]
 		public Rigidbody rb;
 		public ProjectileFactory OriginFactory
 		{
-			get {
-				return originFactory;
-			}
+			get => _originFactory;
 			set {
-				if (originFactory == null) {
-					originFactory = value;
+				if (_originFactory == null) {
+					_originFactory = value;
 				}
 				else {
 					Debug.LogError("Not allowed to change origin factory.");
 				}
 			}
 		}
-
-		ProjectileFactory originFactory;
-		public ProjectileBehaviour AddBehavior (ProjectileBehaviourType type) {
+		private ProjectileFactory _originFactory;
+		public ProjectileBehaviour AddBehavior (ProjectileBehaviourType type)
+		{
+			//ProjectileBehaviourTypeMethods.GetInstance(this, type);
 			switch (type) {
 				case ProjectileBehaviourType.LinearMovement:
 					return AddProjectileBehavior<LinearMovementProjectileBehaviour>();
@@ -54,29 +51,29 @@ namespace Projectiles
 					return AddProjectileBehavior<TriangleBehaviour>();
 				case ProjectileBehaviourType.LobMovement:
 					return AddProjectileBehavior<LobBehaviour>();
+				default : Debug.LogError("Forgot to support " + type);
+					return AddProjectileBehavior<LinearMovementProjectileBehaviour>();
 			}
-			Debug.LogError("Forgot to support " + type);
-			return null;
 		}
 		public ImpactBehaviour AddBehavior (ImpactBehaviourType type) {
 			switch (type) {
 				case ImpactBehaviourType.ExplodeOnImpact:
 					return AddImpactBehavior<ExplodeOnImpactBehaviour>();
+				default:
+					return AddImpactBehavior<ExplodeOnImpactBehaviour>();
 			}
-			Debug.LogError("Forgot to support " + type);
-			return null;
 		}
 		public T AddProjectileBehavior<T>() where T : ProjectileBehaviour, new() {
-			T behavior = ProjectileBehaviorPool<T>.Get();
-			projectileBehaviorList.Add(behavior);
-			return behavior;
-		}
-		public T AddImpactBehavior<T>() where T : ImpactBehaviour, new() {
-			T behavior = ImpactBehaviourPool<T>.Get();
-			_impactBehaviourList.Add(behavior);
+			var behavior = ProjectileBehaviorPool<T>.Get();
+			_projectileBehaviorList.Add(behavior);
 			return behavior;
 		}
 
+		private T AddImpactBehavior<T>() where T : ImpactBehaviour, new() {
+			var behavior = ImpactBehaviourPool<T>.Get();
+			_impactBehaviourList.Add(behavior);
+			return behavior;
+		}
 		private void OnCollisionEnter(Collision collision)
 		{
 			if (!_hasImpacted)
@@ -99,11 +96,11 @@ namespace Projectiles
 		}
 		public void Recycle()
 		{
-			for (int i = 0; i < projectileBehaviorList.Count; i++) {
-				projectileBehaviorList[i].Recycle();
+			for (int i = 0; i < _projectileBehaviorList.Count; i++) {
+				_projectileBehaviorList[i].Recycle();
 			}
-			projectileBehaviorList.Clear();
-			for (int i = 0; i < projectileBehaviorList.Count; i++) {
+			_projectileBehaviorList.Clear();
+			for (int i = 0; i < _projectileBehaviorList.Count; i++) {
 				_impactBehaviourList[i].Recycle();
 			}
 			_impactBehaviourList.Clear();
@@ -115,14 +112,12 @@ namespace Projectiles
 			if (_age > 50f)
 			{
 				Recycle();
-				return;
 			}
 		}
 		public void FixedUpdate()
 		{
-			for (int i = 0; i < projectileBehaviorList.Count; i++) {
-				//Debug.Log("Going through projectile behaviour list");
-				projectileBehaviorList[i].GameUpdate(this);
+			for (int i = 0; i < _projectileBehaviorList.Count; i++) {
+				_projectileBehaviorList[i].GameUpdate(this);
 			}		
 		}
 	}

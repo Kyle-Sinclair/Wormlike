@@ -1,26 +1,26 @@
-using ItemScripts;
 using TMPro;
 using UnityEngine;
+using WeaponSOs;
 
 namespace UIScripts
 {
     public class InventoryButton : MonoBehaviour
     {
-        [SerializeField]private WeaponSO _weaponData;
-        [SerializeField]private TextMeshProUGUI m_TextComponent;
+        [SerializeField]private WeaponSO weaponData;
+        [SerializeField]private TextMeshProUGUI mTextComponent;
 
         void Awake()
         {
 
-            if (_weaponData != null)
+            if (weaponData != null)
             {
                 Debug.Log(("altering button text"));
-                m_TextComponent.text = _weaponData.weaponName;
+                mTextComponent.text = weaponData.weaponName;
             }
         }
         private void OnEnable()
         {
-            if (_weaponData != null)
+            if (weaponData != null)
             {
                 Debug.Log(("altering button text"));
             }

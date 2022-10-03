@@ -1,7 +1,7 @@
-using ItemScripts;
 using UIScripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using WeaponSOs;
 
 namespace ThirdPersonScripts
 {
@@ -12,8 +12,9 @@ namespace ThirdPersonScripts
     public class WormController : MonoBehaviour
     {
         private PlayerInput _input;
+        [SerializeField] private int _initialHealth = 100;
         public int TeamMemberIndex { get; set; }
-        public bool IsActivePlayer;
+        public bool isActivePlayer;
         private MoveBehaviour _moveController; 
         private JumpAndGravityBehaviour _jumpController;
         private WeaponryController _weaponryController;
@@ -30,6 +31,7 @@ namespace ThirdPersonScripts
             _jumpController =  GetComponent<JumpAndGravityBehaviour>();
             _weaponryController = GetComponent<WeaponryController>();
             health = GetComponentInChildren<HealthComponent>();
+            health.SetHealth(_initialHealth);
             CameraTarget = transform.Find("Camera Target").transform;
             DeactivateAsControllable();
 
@@ -45,12 +47,14 @@ namespace ThirdPersonScripts
         }
         public void ActivateAsControllable()
         {
-            IsActivePlayer = true;
+            isActivePlayer = true;
+            Rigidbody rb = GetComponent<Rigidbody>();
+            rb.AddForce(Vector3.up * 200f, ForceMode.Impulse);
             _input.ActivateInput();
         }
         public void DeactivateAsControllable()
         {
-            IsActivePlayer = false;
+            isActivePlayer = false;
             _input.DeactivateInput();
         }
         public Transform GetCameraTarget()
@@ -63,24 +67,24 @@ namespace ThirdPersonScripts
         }
         void Die()
         {
-            onDeath?.Invoke(this);
+            OnDeath?.Invoke(this);
             Destroy(this.gameObject);
         }
-        public delegate void OnDeath(WormController character);
-        public OnDeath onDeath;
+        public delegate void Death(WormController character);
+        public Death OnDeath;
         
         private void OnEnable()
         {
-            if (!IsActivePlayer)
+            if (!isActivePlayer)
             {
                 
                 _input.DeactivateInput();
             }
-            health.onDeath += Die;
+            health.OnDeath += Die;
         }
         private void OnDisable()
         {
-            health.onDeath -= Die;
+            health.OnDeath -= Die;
         }
     }
 }

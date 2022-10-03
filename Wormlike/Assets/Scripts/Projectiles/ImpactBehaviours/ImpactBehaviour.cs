@@ -20,7 +20,7 @@ namespace Projectiles.ImpactBehaviours
 #endif
         public abstract void Recycle();
         public abstract void GameUpdate(Projectile projectile);
-        public abstract void Initialize(float damage, float force, float range, ImpactEffectFactory _impactEffectFactory);
+        public abstract void Initialize(float damage, float force, float range, ImpactEffectFactory impactEffectFactory);
         public abstract ImpactBehaviourType BehaviorType { get; }
 
         public abstract void Trigger(Projectile projectile);

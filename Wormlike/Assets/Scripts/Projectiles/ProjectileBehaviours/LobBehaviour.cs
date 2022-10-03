@@ -16,7 +16,6 @@ namespace Projectiles.ProjectileBehaviours
             ProjectileBehaviorPool<LobBehaviour>.Reclaim(this);
         }
         public override ProjectileBehaviourType BehaviorType => ProjectileBehaviourType.LobMovement;
-
         public override void GameUpdate(Projectile projectile)
         {
             Vector3 velocity = projectile.rb.velocity;

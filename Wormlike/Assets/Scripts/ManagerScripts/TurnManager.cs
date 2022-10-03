@@ -3,36 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Timers;
 using Cinemachine;
-using ItemScripts;
 using ThirdPersonScripts;
 using UnityEngine;
+using WeaponSOs;
 
 namespace ManagerScripts
 {
     public class TurnManager : MonoBehaviour
     {
         private WormController _currentlyControlled;
-        private List<TeamManager> Teams;
-        private Timer turntimer;
+        private List<TeamManager> _teams;
+        private Timer _turntimer;
         private int _currentTeamIndex;
-        [SerializeField] private CinemachineFreeLook _vcam;
+        [SerializeField] private CinemachineFreeLook vcam;
 
         private void Awake()
         {
-            Teams = new List<TeamManager>();
+            _teams = new List<TeamManager>();
             _currentTeamIndex = 0;
-            _vcam = FindObjectOfType<CinemachineFreeLook>();
+            vcam = FindObjectOfType<CinemachineFreeLook>();
         }
         private void Update()
         {
             if (Input.GetKeyUp(KeyCode.P))
             {
-                nextTurn();
+                NextTurn();
             }
         }
         public void RegisterPlayer(WormController newTeamMember, int teamNumber)
         {
-            Teams[teamNumber].RegisterPlayer(newTeamMember);
+            _teams[teamNumber].RegisterPlayer(newTeamMember);
         }
         public void InitializeLists(int numberOfTeams)
         {
@@ -41,25 +41,25 @@ namespace ManagerScripts
                 //Debug.Log("Adding a team list");
                 TeamManager newTeam = new TeamManager();
                 newTeam.onSurrender += RemoveTeam;
-                Teams.Add(newTeam);
+                _teams.Add(newTeam);
             }
         }
         public void BeginTurns()
         {
-            _currentlyControlled = Teams[_currentTeamIndex].NextTeamMember();
-            Teams[_currentTeamIndex]._isActiveTeam = true;
+            _currentlyControlled = _teams[_currentTeamIndex].NextTeamMember();
+            _teams[_currentTeamIndex].IsActiveTeam = true;
             _currentlyControlled.ActivateAsControllable();
-            _currentlyControlled.IsActivePlayer = true;
+            _currentlyControlled.isActivePlayer = true;
             ChangeCameraTarget(_currentlyControlled);
         }
-        private void nextTurn()
+        private void NextTurn()
         {
             _currentlyControlled.DeactivateAsControllable();
-            Teams[_currentTeamIndex]._isActiveTeam = false;
+            _teams[_currentTeamIndex].IsActiveTeam = false;
             _currentTeamIndex++;
-            _currentTeamIndex %= Teams.Count;
-            _currentlyControlled = Teams[_currentTeamIndex].NextTeamMember();
-            Teams[_currentTeamIndex]._isActiveTeam = true;
+            _currentTeamIndex %= _teams.Count;
+            _currentlyControlled = _teams[_currentTeamIndex].NextTeamMember();
+            _teams[_currentTeamIndex].IsActiveTeam = true;
             _currentlyControlled.ActivateAsControllable();
             ChangeCameraTarget(_currentlyControlled);
         }
@@ -70,14 +70,14 @@ namespace ManagerScripts
         }
         private void ChangeCameraTarget(WormController character)
         {
-            _vcam.Follow = character.GetCameraTarget();
-            _vcam.LookAt = character.GetCameraTarget();
+            vcam.Follow = character.GetCameraTarget();
+            vcam.LookAt = character.GetCameraTarget();
         }
 
         private void RemoveTeam(TeamManager surrenderingTeam)
         {
-            Teams.Remove(surrenderingTeam);
-            if (Teams.Count == 1)
+            _teams.Remove(surrenderingTeam);
+            if (_teams.Count == 1)
             {
                 Debug.Log("We have a winner");
             }
