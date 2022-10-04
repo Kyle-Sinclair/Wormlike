@@ -14,7 +14,7 @@ namespace UIScripts
 
             if (weaponData != null)
             {
-                Debug.Log(("altering button text"));
+                //Debug.Log(("altering button text"));
                 mTextComponent.text = weaponData.weaponName;
             }
         }
@@ -22,7 +22,7 @@ namespace UIScripts
         {
             if (weaponData != null)
             {
-                Debug.Log(("altering button text"));
+                //Debug.Log(("altering button text"));
             }
         }
     }

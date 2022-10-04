@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 2131147547164897793}
   - component: {fileID: 2131147547164897792}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: PlayUICanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -462,8 +462,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c4ab729ebc46947b242d4b2eae344f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponData: {fileID: 11400000, guid: ff6bb319e6e7558468108d7f7526287d, type: 2}
-  m_TextComponent: {fileID: 2131147547263677492}
+  weaponData: {fileID: 0}
+  mTextComponent: {fileID: 0}
 --- !u!1 &2131147547263677498
 GameObject:
   m_ObjectHideFlags: 0
@@ -881,8 +881,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c4ab729ebc46947b242d4b2eae344f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponData: {fileID: 11400000, guid: eee15e5a0d88a774f9a9a3b5ebb1d2d4, type: 2}
-  m_TextComponent: {fileID: 2131147548410415400}
+  weaponData: {fileID: 0}
+  mTextComponent: {fileID: 0}
 --- !u!1 &2131147548680350837
 GameObject:
   m_ObjectHideFlags: 0
@@ -1030,5 +1030,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c4ab729ebc46947b242d4b2eae344f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weaponData: {fileID: 11400000, guid: fe73f09df7c4fa849a0f108c38b4b5a1, type: 2}
-  m_TextComponent: {fileID: 2131147546777212091}
+  weaponData: {fileID: 0}
+  mTextComponent: {fileID: 0}

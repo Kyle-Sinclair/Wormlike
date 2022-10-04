@@ -565,7 +565,7 @@ MonoBehaviour:
   gravity: -10
   grounded: 1
   groundedOffset: -0.2
-  groundedRadius: 0.28
+  groundedRadius: 0.5
   groundLayers:
     serializedVersion: 2
     m_Bits: 128

@@ -1,24 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
+using StaticsAndUtilities;
 using UnityEngine;
 
-public class ImpactEffect : MonoBehaviour
+namespace Projectiles.ImpactEffect
 {
-    ImpactEffectFactory _originFactory;
-
-    public ImpactEffectFactory OriginFactory {
-        get => _originFactory;
-        set {
-            Debug.Assert(_originFactory == null, "Redefined origin factory!");
-            _originFactory = value;
-        }
-    }
-
-    public virtual void Initialize(Vector3 position, float blastRadius, float damage)
+    public class ImpactEffect : MonoBehaviour
     {
+        ImpactEffectFactory _originFactory;
+
+        public ImpactEffectFactory OriginFactory {
+            get => _originFactory;
+            set {
+                Debug.Assert(_originFactory == null, "Redefined origin factory!");
+                _originFactory = value;
+            }
+        }
+
+        public virtual void Initialize(Vector3 position, float blastRadius, float damage)
+        {
         
-    }
-    public void Recycle () {
-        _originFactory.Reclaim(this);
+        }
+        public void Recycle () {
+            _originFactory.Reclaim(this);
+        }
     }
 }

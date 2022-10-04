@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting.FullSerializer;
+using Projectiles;
 using UnityEngine;
 
-namespace Projectiles
+namespace StaticsAndUtilities
 {
     [CreateAssetMenu]
     public class ProjectileFactory : ScriptableObject

@@ -1,10 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Projectiles.ImpactBehaviours;
+using Projectiles.ImpactEffect;
 using UnityEngine;
 
-
+namespace StaticsAndUtilities
+{
     [CreateAssetMenu]
     public class ImpactEffectFactory : ScriptableObject
     {
@@ -35,4 +34,5 @@ using UnityEngine;
             Destroy(entity.gameObject);
         }
     }
+}
 

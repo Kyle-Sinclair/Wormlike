@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Timers;
 using Cinemachine;
@@ -9,19 +7,19 @@ using WeaponSOs;
 
 namespace ManagerScripts
 {
-    public class TurnManager : MonoBehaviour
+    public class TurnManager : MonoBehaviour, IGameService
     {
         private WormController _currentlyControlled;
         private List<TeamManager> _teams;
         private Timer _turntimer;
         private int _currentTeamIndex;
         [SerializeField] private CinemachineFreeLook vcam;
-
         private void Awake()
         {
             _teams = new List<TeamManager>();
             _currentTeamIndex = 0;
             vcam = FindObjectOfType<CinemachineFreeLook>();
+            ServiceLocator.Current.Register(this);
         }
         private void Update()
         {
@@ -63,7 +61,6 @@ namespace ManagerScripts
             _currentlyControlled.ActivateAsControllable();
             ChangeCameraTarget(_currentlyControlled);
         }
-
         public void EquipWeaponOnActiveWorm(WeaponSO weaponData)
         {
             _currentlyControlled.EquipWeapon(weaponData);
@@ -73,7 +70,6 @@ namespace ManagerScripts
             vcam.Follow = character.GetCameraTarget();
             vcam.LookAt = character.GetCameraTarget();
         }
-
         private void RemoveTeam(TeamManager surrenderingTeam)
         {
             _teams.Remove(surrenderingTeam);
