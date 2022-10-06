@@ -1,6 +1,10 @@
 
+using System.Collections.Generic;
+using StaticsAndUtilities;
 using ThirdPersonScripts;
 using UnityEngine;
+using UnityEngine.EventSystems;
+
 namespace ManagerScripts
 {
 
@@ -9,7 +13,10 @@ namespace ManagerScripts
      
         //[SerializeField] private Transform _terrain;
         private TurnManager _turnManager;
-        [SerializeField] private GameObject controllableCharacter;
+        [SerializeField] private WormController controllableCharacter;
+
+        [SerializeField]
+        private List<SpawnZone> _spawnZones;
         void Awake()
         {
              ServiceLocator.Current.Register(this);
@@ -35,13 +42,14 @@ namespace ManagerScripts
             int teamNumber =0;
             for (int i = 0; i < numPlayers; i++)
             {
-                 GameObject newCharacter = Instantiate(controllableCharacter);
-                 newCharacter.transform.position = new Vector3(Random.Range(0f,5f),0,Random.Range(0f,5f));
+                 WormController newCharacter = Instantiate(controllableCharacter,_spawnZones[teamNumber].SpawnPoint(), Quaternion.identity);
+                 newCharacter.SetTeamColor(teamNumber);
                  WormController charController  = newCharacter.GetComponent<WormController>();
                  _turnManager.RegisterPlayer(charController, teamNumber);
                 teamNumber++;
                 teamNumber %= numTeams;
             }
+
         }
         
         private void BeginTurns()
@@ -49,5 +57,11 @@ namespace ManagerScripts
             _turnManager.BeginTurns();
         }
 
+        public void RegisterSpawnZone(SpawnZone spawnZone)
+        {
+            _spawnZones.Add(spawnZone);
+        }
+
+       
     }
 }

@@ -1,3 +1,4 @@
+using StaticsAndUtilities;
 using UIScripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -17,7 +18,7 @@ namespace ThirdPersonScripts
         public bool isActivePlayer;
         private MoveBehaviour _moveController; 
         private JumpAndGravityBehaviour _jumpController;
-        private WeaponryController _weaponryController;
+        public WeaponryController weaponryController;
         private CharacterController _characterController;
         [SerializeField]
         private HealthComponent health;
@@ -29,7 +30,7 @@ namespace ThirdPersonScripts
             _characterController = GetComponent<CharacterController>();
             _moveController = GetComponent<MoveBehaviour>();
             _jumpController =  GetComponent<JumpAndGravityBehaviour>();
-            _weaponryController = GetComponent<WeaponryController>();
+            weaponryController = GetComponent<WeaponryController>();
             health = GetComponentInChildren<HealthComponent>();
             health.SetHealth(_initialHealth);
             CameraTarget = transform.Find("Camera Target").transform;
@@ -63,21 +64,25 @@ namespace ThirdPersonScripts
         }
         public void EquipWeapon(WeaponSO weaponData)
         {
-            _weaponryController.EquipWeapon(weaponData);
+            weaponryController.EquipWeapon(weaponData);
         }
         void Die()
         {
+            if (isActivePlayer)
+            {
+                OnKilledWhileActive?.Invoke();
+            }
             OnDeath?.Invoke(this);
             Destroy(this.gameObject);
         }
         public delegate void Death(WormController character);
         public Death OnDeath;
-        
+        public delegate void KilledWhileActive();
+        public KilledWhileActive OnKilledWhileActive;
         private void OnEnable()
         {
             if (!isActivePlayer)
             {
-                
                 _input.DeactivateInput();
             }
             health.OnDeath += Die;
@@ -85,6 +90,12 @@ namespace ThirdPersonScripts
         private void OnDisable()
         {
             health.OnDeath -= Die;
+        }
+
+        public void SetTeamColor(int teamNumber)
+        {
+            var Renderer = GetComponentInChildren<Renderer>();
+            Renderer.material.SetColor("_Color",UtilitiesManager.SetColor((TeamColorEnum)teamNumber));
         }
     }
 }

@@ -5,6 +5,7 @@ using Projectiles.ImpactBehaviours;
 using Projectiles.ProjectileBehaviours;
 using StaticsAndUtilities;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using WeaponSOs;
 
@@ -21,6 +22,7 @@ namespace ThirdPersonScripts
         private Transform _munitionOriginPoint;
         private WeaponSO _weaponData;
         private float _shotAngle;
+        [SerializeField]private RectTransform _WeaponUIElement;
         public void Awake()
         {
             _charge = 0f;
@@ -30,7 +32,7 @@ namespace ThirdPersonScripts
         }
         public void OnChangeAngle(InputAction.CallbackContext context)
         {
-            if (context.performed)
+            if (_weaponEquipped && context.performed)
             { 
                 _shotAngle += context.ReadValue<float>() * 5;
                 _shotAngle = Mathf.Clamp(_shotAngle,0.0f,90.0f);
@@ -40,14 +42,16 @@ namespace ThirdPersonScripts
 
         public void PrimaryFire(InputAction.CallbackContext context)
         {
-
-            if (_weaponEquipped && _weaponData.chargable)
+            if (!EventSystem.current.IsPointerOverGameObject())
             {
-                ShootChargable(context);
-            }
-            else if(_weaponEquipped && context.canceled)
-            {
-                Shoot(0);
+                if (_weaponEquipped && _weaponData.chargable)
+                {
+                    ShootChargable(context);
+                }
+                else if (_weaponEquipped && context.canceled)
+                {
+                    Shoot(0);
+                }
             }
         }
         
@@ -66,6 +70,7 @@ namespace ThirdPersonScripts
                 _charging = false;
                 Shoot(_charge);
                 _charge = 0;
+                OnCharging?.Invoke(_charge);
             }
         }
 
@@ -74,28 +79,33 @@ namespace ThirdPersonScripts
             while (_charging)
             {
                 _charge += Time.deltaTime;
+                _charge = Mathf.Clamp(_charge, 0f, 5f);
+                OnCharging?.Invoke(_charge);
                 yield return null;
             }
+            
         }
         
         private void Shoot(float chargeValue = 0)
         {
+            
             if (!_weaponEquipped){
                 return;
             }
             Debug.Log("charge value = " + chargeValue);
-            Projectile projectile = _spawner.GetProjectile(_weaponData.projectileModel);
+            var projectile = _spawner.GetProjectile(_weaponData.projectileModel);
             OrientProjectile(projectile);
-            ProjectileBehaviour projectileMovementBehaviour  = projectile.AddBehavior(_weaponData.projectileBehaviour);
+            var projectileMovementBehaviour  = projectile.AddBehavior(_weaponData.projectileBehaviour);
             projectileMovementBehaviour.Initialize(projectile,chargeValue,_weaponData.speed);
-            ImpactBehaviour behaviour = projectile.AddBehavior(_weaponData.impactBehaviourType);
+            var behaviour = projectile.AddBehavior(_weaponData.impactBehaviourType);
             behaviour.Initialize(_weaponData.damage,_weaponData.force,_weaponData.range,_spawner.impactEffectFactory);
+            
         }
 
         private void OrientProjectile(Projectile projectile)
         {
             var position = _munitionOriginPoint.position;
-            Vector3 direction = position - weaponHoverPoint.position;
+            var direction = position - weaponHoverPoint.position;
             projectile.transform.position = position;
             projectile.direction = direction;
         }
@@ -106,7 +116,6 @@ namespace ThirdPersonScripts
             {
                 return;
             }
-
             if (_weaponEquipped)
             {
                 Destroy(_weaponModel);
@@ -119,5 +128,8 @@ namespace ThirdPersonScripts
             _charging = false;
             _weaponEquipped = true;
         }
+        public delegate void ChargeValueUpdate(float chargeValue);
+        public ChargeValueUpdate OnCharging;
     }
+   
 }

@@ -15,7 +15,7 @@ MonoBehaviour:
   chargable: 0
   weaponName: Star thrower
   weaponModel: {fileID: 1414511900395635625, guid: 3a2b6936158109840a6401661ea86865, type: 3}
-  projectileModel: 0
+  projectileModel: 3
   projectileBehaviour: 0
   impactBehaviourType: 0
   speed: 15
