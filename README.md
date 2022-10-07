@@ -27,6 +27,7 @@ The level terrain is built using simple primitives with some additional level de
 (G) A player only controls one worm  
 (G) Use the built in Character Controller. Add jumping.  
 (G) Has hit points  
+
 Each worm uses the standard character controller with jumping and movement
 input gained from supporting classes.
 Each worm handles its own health pool, with a container class
