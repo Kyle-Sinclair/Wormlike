@@ -4,7 +4,7 @@ namespace ThirdPersonScripts
 {
     public class ColliderTarget : MonoBehaviour
     {
-        public WormController Worm { get; private set; }
+        private WormController Worm { get; set; }
     
         void Awake () {
             Worm = transform.root.GetComponent<WormController>();

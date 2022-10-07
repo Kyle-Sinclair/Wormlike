@@ -29,6 +29,5 @@ namespace StaticsAndUtilities
             Debug.LogError("Unsupported team colour");
             return Color.red;
         }
-   
     }
 }

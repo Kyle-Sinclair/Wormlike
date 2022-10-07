@@ -6,7 +6,6 @@ namespace Projectiles.ImpactBehaviours
 {
     public sealed class ExplodeOnImpactBehaviour : ImpactBehaviour
     {
-
         private float Force { get; set; }
         private float Damage  { get; set; }
         private float Range  { get; set; }

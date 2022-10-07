@@ -1,13 +1,14 @@
 using StaticsAndUtilities;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace UIScripts
 {
     public class TitleScreenSignaller : MonoBehaviour
     {
-        [SerializeField] private Canvas self;
+        [FormerlySerializedAs("self")] [SerializeField] private Canvas _self;
         [SerializeField] private Slider _numOfTeamsSlider;
         [SerializeField] private Slider _numOfPlayersSlider;
         [SerializeField] private TextMeshProUGUI _numberOfPlayers; 
@@ -26,7 +27,7 @@ namespace UIScripts
             UpdateNumberOfTeams(_numOfTeamsSlider.value);
         
         }
-        public void UpdateNumberOfPlayers(float newValue)
+        private void UpdateNumberOfPlayers(float newValue)
         {
             if (newValue < _numTeams)
             {
@@ -37,7 +38,7 @@ namespace UIScripts
             EqualizeTeamsAndPlayersNumbers();
             _numberOfPlayers.text = newValue.ToString();
         }  
-        public void UpdateNumberOfTeams(float newValue)
+        private void UpdateNumberOfTeams(float newValue)
         {
             _numTeams = (int)newValue;
             EqualizeTeamsAndPlayersNumbers();
@@ -52,9 +53,9 @@ namespace UIScripts
             _numberOfPlayers.text = _numTeams.ToString();
         }
 
-        public void GenerateLevel()
+        private void GenerateLevel()
         {
-            self.enabled = false;
+            _self.enabled = false;
             _levelLoader.StartLoadingBattleGround(_numPlayers, _numTeams);
         }
     }

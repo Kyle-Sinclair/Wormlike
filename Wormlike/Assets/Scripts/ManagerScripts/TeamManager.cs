@@ -10,7 +10,7 @@ namespace ManagerScripts
         private List<WormController> _teamMembers;
         private int _currentPlayerIndex;
         public bool IsActiveTeam;
-        public bool HasPlayers => _teamMembers.Count > 0;
+        private bool HasPlayers => _teamMembers.Count > 0;
         public TeamManager()
         {
             IsActiveTeam = false;

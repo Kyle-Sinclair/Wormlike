@@ -1,5 +1,4 @@
 using UnityEngine;
-
 namespace Projectiles.ProjectileBehaviours
 {
     public class LobBehaviour : ProjectileBehaviour
@@ -9,7 +8,7 @@ namespace Projectiles.ProjectileBehaviours
         }
         public override void Initialize(Projectile projectile, float charge, float speed)
         {
-            projectile.rb.AddForce(projectile.direction * charge * 500f);
+            projectile.Rb.AddForce(projectile.Direction * charge * 500f);
         }
         public override void Recycle()
         {
@@ -18,9 +17,9 @@ namespace Projectiles.ProjectileBehaviours
         public override ProjectileBehaviourType BehaviorType => ProjectileBehaviourType.LobMovement;
         public override void GameUpdate(Projectile projectile)
         {
-            Vector3 velocity = projectile.rb.velocity;
+            Vector3 velocity = projectile.Rb.velocity;
             velocity.y -= 9.8f * Time.deltaTime;
-            projectile.rb.velocity = velocity;
+            projectile.Rb.velocity = velocity;
         }
 
     }

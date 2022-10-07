@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48ce0802466394b4abe0eef5f1225f5c, type: 3}
   m_Name: Star Thrower
   m_EditorClassIdentifier: 
-  chargable: 0
-  weaponName: Star thrower
-  weaponModel: {fileID: 1414511900395635625, guid: 3a2b6936158109840a6401661ea86865, type: 3}
-  projectileModel: 3
-  projectileBehaviour: 0
-  impactBehaviourType: 0
-  speed: 15
-  damage: 3
-  force: 2
-  range: 2
+  Chargable: 1
+  WeaponName: Star Thrower
+  WeaponModel: {fileID: 1414511900395635625, guid: 3a2b6936158109840a6401661ea86865, type: 3}
+  ProjectileModel: 3
+  ProjectileBehaviour: 0
+  ImpactBehaviourType: 0
+  Speed: 8
+  Damage: 10
+  Force: 2
+  Range: 8

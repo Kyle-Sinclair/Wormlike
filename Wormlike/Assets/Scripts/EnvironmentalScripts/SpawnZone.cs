@@ -11,7 +11,7 @@ namespace StaticsAndUtilities
             position.x = transform.position.x + Random.Range(0f,5f);
             position.y = transform.position.y;
             position.z = transform.position.z + Random.Range(0f,5f);
-            Debug.Log("Spawning at position " + position);
+            //Debug.Log("Spawning at position " + position);
             return position;
         } 
 
@@ -20,7 +20,7 @@ namespace StaticsAndUtilities
             RegisterWithMapManager();
         }
 
-        public void RegisterWithMapManager()
+        private void RegisterWithMapManager()
         {
             ServiceLocator.Current.Get<MapManager>().RegisterSpawnZone(this);
         }

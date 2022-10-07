@@ -19,14 +19,14 @@ namespace Projectiles.ProjectileBehaviours
 			}
 			_age += Time.deltaTime;
 			Vector3 p = projectile.transform.localPosition;
-			p.x += projectile.direction.x * (_speed * Time.deltaTime);
-			p.z += projectile.direction.z * (_speed * Time.deltaTime);
+			p.x += projectile.Direction.x * (_speed * Time.deltaTime);
+			p.z += projectile.Direction.z * (_speed * Time.deltaTime);
 			if (!_reachedPeak && p.y >= _peakHeight)
 			{
 				_reachedPeak = true;
 			}
 			p.y += !_reachedPeak ? _age * Time.deltaTime : -_age * Time.deltaTime;
-			projectile.rb.MovePosition(p);
+			projectile.Rb.MovePosition(p);
 		}
 
 		private void Initialize(Projectile projectile)

@@ -2,43 +2,57 @@ using StaticsAndUtilities;
 using UIScripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using WeaponSOs;
-
 namespace ThirdPersonScripts
 {
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(MoveBehaviour))]
     [RequireComponent(typeof(JumpAndGravityBehaviour))]
-
     public class WormController : MonoBehaviour
     {
-        private PlayerInput _input;
         [SerializeField] private int _initialHealth = 100;
+        [FormerlySerializedAs("isActivePlayer")] public bool IsActivePlayer;
         public int TeamMemberIndex { get; set; }
-        public bool isActivePlayer;
+        [FormerlySerializedAs("weaponryController")] 
+        public WeaponryController WeaponryController;
+        [FormerlySerializedAs("health")] [SerializeField]
+        private HealthComponent _health;
+        private PlayerInput _input;
         private MoveBehaviour _moveController; 
         private JumpAndGravityBehaviour _jumpController;
-        public WeaponryController weaponryController;
-        private CharacterController _characterController;
-        [SerializeField]
-        private HealthComponent health;
-
+        private CharacterController _characterController; 
         private Transform CameraTarget { get; set; }
-        void Awake()
+
+        public void Awake()
         {
             _input = GetComponent<PlayerInput>();
             _characterController = GetComponent<CharacterController>();
             _moveController = GetComponent<MoveBehaviour>();
             _jumpController =  GetComponent<JumpAndGravityBehaviour>();
-            weaponryController = GetComponent<WeaponryController>();
-            health = GetComponentInChildren<HealthComponent>();
-            health.SetHealth(_initialHealth);
+            WeaponryController = GetComponent<WeaponryController>();
+            _health = GetComponentInChildren<HealthComponent>();
+            _health.SetHealth(_initialHealth);
             CameraTarget = transform.Find("Camera Target").transform;
             DeactivateAsControllable();
-
         }
-        // Update is called once per frame
-        void FixedUpdate()
+        private void OnEnable()
+        {
+            if (!IsActivePlayer)
+            {
+                _input.DeactivateInput();
+            }
+            _health.OnDeath += Die;
+        }
+        private void OnDisable()
+        {
+            _health.OnDeath -= Die;
+        }
+        public delegate void Death(WormController character);
+        public Death OnDeath;
+        public delegate void KilledWhileActive();
+        public KilledWhileActive OnKilledWhileActive;
+        public void FixedUpdate()
         {
             Move();
         }
@@ -48,14 +62,13 @@ namespace ThirdPersonScripts
         }
         public void ActivateAsControllable()
         {
-            isActivePlayer = true;
-            Rigidbody rb = GetComponent<Rigidbody>();
-            rb.AddForce(Vector3.up * 200f, ForceMode.Impulse);
+            IsActivePlayer = true;
             _input.ActivateInput();
         }
         public void DeactivateAsControllable()
         {
-            isActivePlayer = false;
+            IsActivePlayer = false;
+            WeaponryController.ClearCharge();
             _input.DeactivateInput();
         }
         public Transform GetCameraTarget()
@@ -64,38 +77,22 @@ namespace ThirdPersonScripts
         }
         public void EquipWeapon(WeaponSO weaponData)
         {
-            weaponryController.EquipWeapon(weaponData);
+            WeaponryController.EquipWeapon(weaponData);
         }
-        void Die()
+        private void Die()
         {
-            if (isActivePlayer)
+            if (IsActivePlayer)
             {
                 OnKilledWhileActive?.Invoke();
             }
             OnDeath?.Invoke(this);
             Destroy(this.gameObject);
         }
-        public delegate void Death(WormController character);
-        public Death OnDeath;
-        public delegate void KilledWhileActive();
-        public KilledWhileActive OnKilledWhileActive;
-        private void OnEnable()
-        {
-            if (!isActivePlayer)
-            {
-                _input.DeactivateInput();
-            }
-            health.OnDeath += Die;
-        }
-        private void OnDisable()
-        {
-            health.OnDeath -= Die;
-        }
-
+        
         public void SetTeamColor(int teamNumber)
         {
-            var Renderer = GetComponentInChildren<Renderer>();
-            Renderer.material.SetColor("_Color",UtilitiesManager.SetColor((TeamColorEnum)teamNumber));
+            var renderer = GetComponentInChildren<Renderer>();
+            renderer.material.SetColor("_Color",UtilitiesManager.SetColor((TeamColorEnum)teamNumber));
         }
     }
 }

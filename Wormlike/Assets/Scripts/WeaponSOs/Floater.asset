@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48ce0802466394b4abe0eef5f1225f5c, type: 3}
   m_Name: Floater
   m_EditorClassIdentifier: 
-  chargable: 0
-  weaponName: Floater
-  weaponModel: {fileID: 1414511900395635625, guid: 3a2b6936158109840a6401661ea86865, type: 3}
-  projectileModel: 0
-  projectileBehaviour: 2
-  impactBehaviourType: 0
-  speed: 10
-  damage: 15
-  force: 2
-  range: 4
+  Chargable: 0
+  WeaponName: Floater
+  WeaponModel: {fileID: 1414511900395635625, guid: 3a2b6936158109840a6401661ea86865, type: 3}
+  ProjectileModel: 0
+  ProjectileBehaviour: 2
+  ImpactBehaviourType: 0
+  Speed: 5
+  Damage: 15
+  Force: 2
+  Range: 4

@@ -11,7 +11,7 @@ namespace Projectiles.ProjectileBehaviours
 		}
 		public override void GameUpdate(Projectile projectile) {
 			Vector3 pos = projectile.transform.localPosition;
-			projectile.rb.MovePosition(pos + projectile.direction * (_speed * Time.deltaTime));
+			projectile.Rb.MovePosition(pos + projectile.Direction * (_speed * Time.deltaTime));
 		}
 		public override ProjectileBehaviourType BehaviorType => ProjectileBehaviourType.LinearMovement;
 		public override void Initialize(Projectile projectile, float charge, float speed)

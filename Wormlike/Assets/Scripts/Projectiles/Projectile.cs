@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using Projectiles.ImpactBehaviours;
 using Projectiles.ProjectileBehaviours;
 using StaticsAndUtilities;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Projectiles
 {
@@ -12,7 +11,8 @@ namespace Projectiles
 	{
 		private List<ProjectileBehaviour> _projectileBehaviorList = new List<ProjectileBehaviour>();
 		private List<ImpactBehaviour> _impactBehaviourList = new List<ImpactBehaviour>();
-		public Vector3 direction;
+		[FormerlySerializedAs("direction")] 
+		public Vector3 Direction;
 		private float _age = 0;
 		private bool _hasImpacted = false;
 		public int ProjectileId
@@ -25,8 +25,8 @@ namespace Projectiles
 			}
 		}
 		private int _projectileId = int.MinValue;
-		[SerializeField]
-		public Rigidbody rb;
+		[FormerlySerializedAs("rb")] [SerializeField]
+		public Rigidbody Rb;
 		public ProjectileFactory OriginFactory
 		{
 			get => _originFactory;
@@ -42,7 +42,7 @@ namespace Projectiles
 		private ProjectileFactory _originFactory;
 		public ProjectileBehaviour AddBehavior (ProjectileBehaviourType type)
 		{
-			//ProjectileBehaviourTypeMethods.GetInstance(this, type);
+			ProjectileBehaviourTypeMethods.GetInstance(this, type);
 			switch (type) {
 				case ProjectileBehaviourType.LinearMovement:
 					return AddProjectileBehavior<LinearMovementProjectileBehaviour>();
@@ -91,17 +91,18 @@ namespace Projectiles
 		{
 			_hasImpacted = false;
 			_age = 0;
-			direction = Vector3.zero;
-			rb.velocity = Vector3.zero;
-			rb.rotation = Quaternion.identity;
+			Direction = Vector3.zero;
+			Rb.velocity = Vector3.zero;
+			Rb.rotation = Quaternion.identity;
 		}
-		public void Recycle()
+
+		private void Recycle()
 		{
-			for (int i = 0; i < _projectileBehaviorList.Count; i++) {
+			for (var i = 0; i < _projectileBehaviorList.Count; i++) {
 				_projectileBehaviorList[i].Recycle();
 			}
 			_projectileBehaviorList.Clear();
-			for (int i = 0; i < _projectileBehaviorList.Count; i++) {
+			for (var i = 0; i < _projectileBehaviorList.Count; i++) {
 				_impactBehaviourList[i].Recycle();
 			}
 			_impactBehaviourList.Clear();

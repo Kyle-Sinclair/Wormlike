@@ -22,7 +22,7 @@ namespace Projectiles.ProjectileBehaviours
 			// }
 			if (_age > 1f)
 			{
-				projectile.rb.MovePosition(	projectile.transform.localPosition + projectile.direction * ((_speed + _age * 3f) * Time.deltaTime));
+				projectile.Rb.MovePosition(	projectile.transform.localPosition + projectile.Direction * ((_speed + _age * 3f) * Time.deltaTime));
 			}
 
 		}
@@ -32,7 +32,7 @@ namespace Projectiles.ProjectileBehaviours
 		public override void Initialize(Projectile projectile, float charge, float speed)
 		{
 			//Debug.Log("adding force in this direction " + projectile.direction * 15f);
-			projectile.rb.AddRelativeForce(projectile.direction * 20f,ForceMode.Impulse);
+			projectile.Rb.AddRelativeForce(projectile.Direction * 20f,ForceMode.Impulse);
 			_speed = speed;
 		}
 

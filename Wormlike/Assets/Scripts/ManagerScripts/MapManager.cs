@@ -4,17 +4,15 @@ using StaticsAndUtilities;
 using ThirdPersonScripts;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 namespace ManagerScripts
 {
 
     public class MapManager : MonoBehaviour, IGameService
     {
-     
-        //[SerializeField] private Transform _terrain;
         private TurnManager _turnManager;
-        [SerializeField] private WormController controllableCharacter;
-
+        [FormerlySerializedAs("controllableCharacter")] [SerializeField] private WormController _controllableCharacter;
         [SerializeField]
         private List<SpawnZone> _spawnZones;
         void Awake()
@@ -42,7 +40,7 @@ namespace ManagerScripts
             int teamNumber =0;
             for (int i = 0; i < numPlayers; i++)
             {
-                 WormController newCharacter = Instantiate(controllableCharacter,_spawnZones[teamNumber].SpawnPoint(), Quaternion.identity);
+                 WormController newCharacter = Instantiate(_controllableCharacter,_spawnZones[teamNumber].SpawnPoint(), Quaternion.identity);
                  newCharacter.SetTeamColor(teamNumber);
                  WormController charController  = newCharacter.GetComponent<WormController>();
                  _turnManager.RegisterPlayer(charController, teamNumber);
@@ -51,12 +49,10 @@ namespace ManagerScripts
             }
 
         }
-        
         private void BeginTurns()
         {
             _turnManager.BeginTurns();
         }
-
         public void RegisterSpawnZone(SpawnZone spawnZone)
         {
             _spawnZones.Add(spawnZone);

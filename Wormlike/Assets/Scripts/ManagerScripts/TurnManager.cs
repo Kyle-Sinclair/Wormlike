@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Timers;
 using Cinemachine;
 using ThirdPersonScripts;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using WeaponSOs;
 
@@ -11,40 +10,37 @@ namespace ManagerScripts
 {
     public class TurnManager : MonoBehaviour, IGameService
     {
+        [SerializeField]  private float _turnDuration = 15f;
+        [FormerlySerializedAs("vcam")]
+        [SerializeField] private CinemachineFreeLook _vcam;
+        [SerializeField] private Image _turnTimerImage;
         private WormController _currentlyControlled;
         private List<TeamManager> _teams;
-        private float _turntimer;
-        private bool currentTurnOngoing;
         private int _currentTeamIndex;
-        [SerializeField]  private float _turnDuration = 15f;
-        [SerializeField] private CinemachineFreeLook vcam;
-        [SerializeField] private Image _turnTimerImage;
+        private float _turntimer;
+        private bool _currentTurnOngoing;
         private ChargeCounter _chargeCounter;
         private void Awake()
         {
             _teams = new List<TeamManager>();
             _currentTeamIndex = 0;
-            vcam = FindObjectOfType<CinemachineFreeLook>();
+            _vcam = FindObjectOfType<CinemachineFreeLook>();
             _chargeCounter = FindObjectOfType<ChargeCounter>();
             ServiceLocator.Current.Register(this);
             _turntimer = _turnDuration;
-            currentTurnOngoing = false;
+            _currentTurnOngoing = false;
 
         }
         private void Update()
         {
-            if (currentTurnOngoing)
+            if (_currentTurnOngoing)
             {
-                Debug.Log("Decrementing time");
-                
                 _turntimer -= Time.deltaTime;
             }
             if (_turntimer <= 0)
             {
-                Debug.Log("next turn");
                 NextTurn();
             }
-
             _turnTimerImage.fillAmount = _turntimer / _turnDuration;
         }
         public void RegisterPlayer(WormController newTeamMember, int teamNumber)
@@ -54,40 +50,38 @@ namespace ManagerScripts
         }
         public void InitializeLists(int numberOfTeams)
         {
-            for (int i = 0; i < numberOfTeams; i++)
+            for (var i = 0; i < numberOfTeams; i++)
             {
-                //Debug.Log("Adding a team list");
                 TeamManager newTeam = new TeamManager();
                 newTeam.onSurrender += RemoveTeam;
                 _teams.Add(newTeam);
             }
         }
-        public void BeginTurns()
-        {
-            _currentlyControlled = _teams[_currentTeamIndex].NextTeamMember();
-            _teams[_currentTeamIndex].IsActiveTeam = true;
-            _currentlyControlled.ActivateAsControllable();
-            _currentlyControlled.isActivePlayer = true;
-            ChangeCameraTarget(_currentlyControlled);
-            _currentlyControlled.weaponryController.OnCharging += _chargeCounter.UpdateCharge;
-             currentTurnOngoing = true;
+        public void BeginTurns() {
+            ActivateNextWorm();
         }
         private void NextTurn()
         {
-            currentTurnOngoing = false;
-            _currentlyControlled.weaponryController.OnCharging -= _chargeCounter.UpdateCharge;
+            DeactivateCurrentWorm();
+            _chargeCounter.ResetCharge();
+            IncrementCurrentTeam();
+            ActivateNextWorm();
+        }
 
+        private void DeactivateCurrentWorm() {
+            _currentTurnOngoing = false;
+            _currentlyControlled.WeaponryController.OnCharging -= _chargeCounter.UpdateCharge;
             _currentlyControlled.DeactivateAsControllable();
             _teams[_currentTeamIndex].IsActiveTeam = false;
-            IncrementCurrentTeam();
+        }
+        private void ActivateNextWorm() {
             _currentlyControlled = _teams[_currentTeamIndex].NextTeamMember();
             _teams[_currentTeamIndex].IsActiveTeam = true;
             _currentlyControlled.ActivateAsControllable();
             ChangeCameraTarget(_currentlyControlled);
             _turntimer = _turnDuration;
-            _currentlyControlled.weaponryController.OnCharging += _chargeCounter.UpdateCharge;
-
-            currentTurnOngoing = true;
+            _currentlyControlled.WeaponryController.OnCharging += _chargeCounter.UpdateCharge;
+            _currentTurnOngoing = true;
         }
 
         private void IncrementCurrentTeam()
@@ -101,8 +95,8 @@ namespace ManagerScripts
         }
         private void ChangeCameraTarget(WormController character)
         {
-            vcam.Follow = character.GetCameraTarget();
-            vcam.LookAt = character.GetCameraTarget();
+            _vcam.Follow = character.GetCameraTarget();
+            _vcam.LookAt = character.GetCameraTarget();
         }
         private void RemoveTeam(TeamManager surrenderingTeam)
         {
@@ -111,9 +105,11 @@ namespace ManagerScripts
                 _currentTeamIndex--;
             }
             _teams.Remove(surrenderingTeam);
-            if (_teams.Count == 1)
+            IncrementCurrentTeam();
+            if (_teams.Count <= 1)
             {
-                Debug.Log("We have a winner");
+                Debug.Log("Game over");
+                Destroy(this);
             }
         }
 
